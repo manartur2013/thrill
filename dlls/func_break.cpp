@@ -121,6 +121,11 @@ void CBreakable::KeyValue( KeyValueData* pkvd )
 	}
 	else if (FStrEq(pkvd->szKeyName, "lip") )
 		pkvd->fHandled = TRUE;
+	else if (FStrEq(pkvd->szKeyName, "dmgmask") )
+	{
+		m_bitsDamageMask = atoi( pkvd->szValue );
+		pkvd->fHandled = TRUE;
+	}
 	else
 		CBaseDelay::KeyValue( pkvd );
 }
@@ -144,6 +149,7 @@ TYPEDESCRIPTION CBreakable::m_SaveData[] =
 	DEFINE_FIELD( CBreakable, m_iszSpawnObject, FIELD_STRING ),
 
 	// Explosion magnitude is stored in pev->impulse
+	DEFINE_FIELD( CBreakable, m_bitsDamageMask, FIELD_INTEGER ),
 };
 
 IMPLEMENT_SAVERESTORE( CBreakable, CBaseEntity );
@@ -576,6 +582,9 @@ int CBreakable :: TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, f
 	
 	if (!IsBreakable())
 		return 0;
+
+	if ( bitsDamageType & m_bitsDamageMask )
+		flDamage = 0;
 
 	// Breakables take double damage from the crowbar
 	if ( bitsDamageType & DMG_CLUB )

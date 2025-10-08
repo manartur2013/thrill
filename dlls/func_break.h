@@ -69,6 +69,7 @@ public:
 	float		m_angle;
 	int			m_iszGibModel;
 	int			m_iszSpawnObject;
+	int			m_bitsDamageMask;	// damage types to ignore
 
 private:
 	unsigned short m_usShards;
