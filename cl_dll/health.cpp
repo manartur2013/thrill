@@ -293,7 +293,17 @@ int CHudHealth::Draw(float flTime)
 	}	
 
 	DrawDamage(flTime);
-	return DrawPain(flTime);
+
+	if ( m_iHealth <= 0 )
+	{
+		if (m_fFade < 150)
+			m_fFade += 5;
+
+		FillRGBA(0, 0, gHUD.m_iHudScaleWidth, gHUD.m_iHudScaleHeight, 225, 0, 0, m_fFade);
+	}
+	else return DrawPain(flTime);
+	
+	return 1;
 }
 
 void CHudHealth::CalcDamageDirection(vec3_t vecFrom)
