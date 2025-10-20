@@ -3681,7 +3681,7 @@ void CSprayCan::Think( void )
 	
 	pPlayer = (CBasePlayer *)GET_PRIVATE(pev->owner);
 
-	if (pPlayer)
+	if (pPlayer && g_pGameRules->IsMultiplayer())
 		nFrames = pPlayer->GetCustomDecalFrames();
 	else
 		nFrames = -1;
@@ -3696,8 +3696,10 @@ void CSprayCan::Think( void )
 	// No customization present.
 	if (nFrames == -1)
 	{
-		UTIL_DecalTrace( &tr, DECAL_LAMBDA6 );
-		UTIL_Remove( this );
+		UTIL_PlayerDecalTrace( &tr, playernum, pev->frame, FALSE );
+
+		if ( pev->frame++ >= DECAL_LAMBDA6)
+			UTIL_Remove( this );
 	}
 	else
 	{
@@ -3916,6 +3918,9 @@ void CBasePlayer::ImpulseCommands( )
 			m_flNextDecalTime = gpGlobals->time + decalfrequency.value;
 			CSprayCan *pCan = GetClassPtr((CSprayCan *)NULL);
 			pCan->Spawn( pev );
+
+			if ( !g_pGameRules->IsMultiplayer() || (m_nCustomSprayFrames == -1) )
+				pCan->pev->frame = DECAL_LAMBDA1;
 		}
 
 		break;
