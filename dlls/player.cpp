@@ -3661,15 +3661,7 @@ void CSprayCan::Spawn ( entvars_t *pevOwner )
 	pev->frame = 0;
 
 	pev->nextthink = gpGlobals->time + 0.1;
-	EMIT_SOUND(ENT(pev), CHAN_VOICE, "player/sprayer.wav", 1, ATTN_NORM);
-
-	MESSAGE_BEGIN( MSG_ONE, SVC_TEMPENTITY, g_vecZero, pevOwner );
-		WRITE_BYTE( TE_PLAYERSPRITES );
-		WRITE_SHORT( ENTINDEX( ENT( pevOwner ) ) );
-		WRITE_SHORT( g_sModelIndex );
-		WRITE_BYTE( 20 );
-		WRITE_BYTE( 10 );
-	MESSAGE_END( );		
+	EMIT_SOUND(ENT(pev), CHAN_VOICE, "player/sprayer.wav", 1, ATTN_NORM);	
 }
 
 void CSprayCan::Think( void )
