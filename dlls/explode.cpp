@@ -280,6 +280,9 @@ void ExplosionCreate( const Vector &center, const Vector &angles, edict_t *pOwne
 	if ( !doDamage )
 		pExplosion->pev->spawnflags |= SF_ENVEXPLOSION_NODAMAGE;
 
+	pExplosion->pev->spawnflags |= SF_ENVEXPLOSION_NOSMOKE;
+	pExplosion->pev->spawnflags |= SF_ENVEXPLOSION_NOSPARKS;
+
 	pExplosion->Spawn();
 	pExplosion->Use( NULL, NULL, USE_TOGGLE, 0 );
 }
