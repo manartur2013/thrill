@@ -923,8 +923,15 @@ int CHudAmmo::Draw(float flTime)
 	if ((pw->iAmmoType < 0) && (pw->iAmmo2Type < 0))
 		return 0;
 
-	if ( m_pWeapon && gHUD.m_pCvarCrosshair->value )
-		DrawCrosshairScalable(m_pWeapon->hCrosshair, m_pWeapon->rcCrosshair, 255, 255, 255);
+
+	if ( gHUD.m_pCvarCrosshair->value )
+	{
+		if ( CVAR_GET_FLOAT( "crosshair" ) )
+			gEngfuncs.pfnClientCmd( "crosshair 0" );
+
+		if (m_pWeapon)
+			DrawCrosshairScalable(m_pWeapon->hCrosshair, m_pWeapon->rcCrosshair, 255, 255, 255);
+	}
 
 	int iFlags = DHN_DRAWZERO; // draw 0 values
 
