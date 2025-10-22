@@ -507,7 +507,8 @@ public:
 //
 // generic Toggle entity.
 //
-#define	SF_ITEM_USE_ONLY	256 //  ITEM_USE_ONLY = BUTTON_USE_ONLY = DOOR_USE_ONLY!!! 
+#define	SF_ITEM_USE_ONLY			256 //  ITEM_USE_ONLY = BUTTON_USE_ONLY = DOOR_USE_ONLY!!! 
+#define SF_ITEM_USE_THROUGH_BSP		4096 // no traceline check is done for impulse use
 
 class CBaseToggle : public CBaseAnimating
 {
@@ -724,7 +725,20 @@ public:
 	
 	static	TYPEDESCRIPTION m_SaveData[];
 	// Buttons that don't take damage can be IMPULSE used
-	virtual int	ObjectCaps( void ) { return (CBaseToggle:: ObjectCaps() & ~FCAP_ACROSS_TRANSITION) | (pev->takedamage?0:FCAP_IMPULSE_USE); }
+	virtual int	ObjectCaps( void ) 
+	{
+		int iCaps = CBaseToggle:: ObjectCaps() & ~FCAP_ACROSS_TRANSITION;
+
+		if (!pev->takedamage)
+		{
+			iCaps |= FCAP_IMPULSE_USE;
+			
+			if (pev->spawnflags & SF_ITEM_USE_THROUGH_BSP)
+				iCaps |= FCAP_USE_THROUGH_BSP;
+		}
+
+		return iCaps; 
+	}
 
 	BOOL	m_fStayPushed;	// button stays pushed in until touched again?
 	BOOL	m_fRotating;		// a rotating button?  default is a sliding button.

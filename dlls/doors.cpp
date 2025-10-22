@@ -41,10 +41,17 @@ public:
 
 	virtual int	ObjectCaps( void ) 
 	{ 
+		int iCaps = CBaseToggle::ObjectCaps() & ~FCAP_ACROSS_TRANSITION;
+		
 		if (pev->spawnflags & SF_ITEM_USE_ONLY)
-			return (CBaseToggle::ObjectCaps() & ~FCAP_ACROSS_TRANSITION) | FCAP_IMPULSE_USE;
-		else
-			return (CBaseToggle::ObjectCaps() & ~FCAP_ACROSS_TRANSITION);
+		{
+			iCaps |= FCAP_IMPULSE_USE;
+
+			if (pev->spawnflags & SF_ITEM_USE_THROUGH_BSP)
+				iCaps |= FCAP_USE_THROUGH_BSP;
+		}
+		
+		return iCaps;
 	};
 	virtual int	Save( CSave &save );
 	virtual int	Restore( CRestore &restore );
