@@ -2844,3 +2844,52 @@ void CTriggerSuitUpdate :: UpdateTouch( CBaseEntity *pOther )
 	if ( pev->spawnflags & SF_TRIGGER_UPDATE_TARGETONCE )
 		UTIL_Remove( this );
 }
+
+class CTriggerPardon : public CBaseDelay
+{
+public:
+	void Spawn( void );
+	void Use ( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value );
+	void EXPORT PardonThink( void );
+};
+
+LINK_ENTITY_TO_CLASS( trigger_pardon, CTriggerPardon );
+
+void CTriggerPardon :: Spawn( void )
+{
+	if ( FStringNull(pev->targetname) )
+	{
+		// useless
+		UTIL_Remove(this);
+		return;
+	}
+
+	pev->solid = SOLID_NOT;
+}
+
+void CTriggerPardon :: Use ( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value )
+{
+	SetThink(&CTriggerPardon::PardonThink);
+	pev->nextthink = gpGlobals->time + m_flDelay;
+}
+
+void CTriggerPardon :: PardonThink( void )
+{
+	CBaseMonster *pEntity;
+
+	SetThink(&CBaseDelay::SUB_Remove);
+	pev->nextthink = gpGlobals->time + 0.1;
+
+	if ( FStringNull(pev->target) )
+		return;
+
+	pEntity = (CBaseMonster *)CBaseEntity::Instance( FIND_ENTITY_BY_TARGETNAME(NULL, STRING(pev->target)) );
+	
+	if ( !pEntity )
+		return;
+
+	if ( !(pEntity->pev->flags & FL_MONSTER) )
+		return;
+
+	pEntity->BecomeFree();
+}

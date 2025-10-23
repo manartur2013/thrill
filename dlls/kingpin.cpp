@@ -35,7 +35,6 @@ public:
 
 	void SetYawSpeed ( void );
 	void HandleAnimEvent( MonsterEvent_t *pEvent );
-	void EXPORT MonsterUse ( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value );
 
 	void StartTask ( Task_t *pTask );
 	void RunTask ( Task_t *pTask );
@@ -87,7 +86,6 @@ void CKingpin :: Spawn( )
 	m_flFieldOfView		= VIEW_FIELD_FULL;	// kingpin has four eyes, so it can see around 360 degrees
 
 	MonsterInit();
-	SetUse ( &CKingpin::MonsterUse );
 }
 
 void CKingpin :: Precache( void )
@@ -137,12 +135,6 @@ void CKingpin :: IdleSound( void )
 void CKingpin :: SetYawSpeed ( void )
 {
 	pev->yaw_speed = 100;
-}
-
-void CKingpin :: MonsterUse ( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value )
-{
-	if ( useType == USE_ON )
-		ClearBits( pev->spawnflags, SF_MONSTER_PRISONER );
 }
 
 //=========================================================

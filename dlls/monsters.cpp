@@ -3439,3 +3439,7 @@ void CBaseMonster :: SUB_SetDefaultThink( void )
 }
 */
 
+void CBaseMonster :: BecomeFree( void )
+{
+	ClearBits( pev->spawnflags, SF_MONSTER_PRISONER );
+}

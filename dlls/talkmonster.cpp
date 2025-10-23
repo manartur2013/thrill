@@ -1532,10 +1532,6 @@ void CTalkMonster :: FollowerUse( CBaseEntity *pActivator, CBaseEntity *pCaller,
 			StopFollowing( TRUE );
 		}
 	}
-
-	// TODO: make separate entity for this that would work on all types of monsters
-	if ( useType == USE_OFF )
-		ClearBits( pev->spawnflags, SF_MONSTER_PRISONER );
 }
 
 void CTalkMonster::KeyValue( KeyValueData *pkvd )
