@@ -3648,13 +3648,10 @@ public:
 	void	Think( void );
 
 	virtual int	ObjectCaps( void ) { return FCAP_DONT_SAVE; }
-
-	int g_sModelIndex;
 };
 
 void CSprayCan::Spawn ( entvars_t *pevOwner )
 {
-	g_sModelIndex = PRECACHE_MODEL( "sprites/explode1.spr" );
 	pev->origin = pevOwner->origin + Vector ( 0 , 0 , 32 );
 	pev->angles = pevOwner->v_angle;
 	pev->owner = ENT(pevOwner);
