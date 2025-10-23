@@ -245,18 +245,17 @@ void CCrossbowBolt::ExplodeThink( void )
 		WRITE_COORD( pev->origin.x );
 		WRITE_COORD( pev->origin.y );
 		WRITE_COORD( pev->origin.z );
+		WRITE_SHORT( g_sModelIndexFireball );
 		if (iContents != CONTENTS_WATER)
-		{
-			WRITE_SHORT( g_sModelIndexFireball );
-		}
+			WRITE_BYTE( iScale ); // scale * 10
 		else
-		{
-			WRITE_SHORT( g_sModelIndexWExplosion );
-		}
-		WRITE_BYTE( iScale  ); // scale * 10
+			WRITE_BYTE( 0 );	// no sprite
 		WRITE_BYTE( 15  ); // framerate
 		WRITE_BYTE( TE_EXPLFLAG_NONE );
 	MESSAGE_END();
+
+	if (iContents == CONTENTS_WATER)
+		PLAYBACK_EVENT_FULL( NULL, NULL, g_sBubbleXplo, 0.0, (float*)&pev->origin, (float*)&g_vecZero, 0.0, 0.0, 16, 0, 0, 0);
 
 	entvars_t *pevOwner;
 

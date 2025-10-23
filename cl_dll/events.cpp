@@ -17,6 +17,7 @@ extern "C"
 	void EV_Shards ( struct event_args_s *args );
 	void EV_Spark ( struct event_args_s *args  );
 	void EV_Explode ( struct event_args_s *args  );
+	void EV_BubbleExplode ( struct event_args_s *args  );
 }
 
 /*

@@ -34,6 +34,7 @@
 unsigned short g_sSparks;
 unsigned short g_sSpark;
 unsigned short g_sExplode;
+unsigned short g_sBubbleXplo;
 
 float UTIL_WeaponTimeBase( void )
 {

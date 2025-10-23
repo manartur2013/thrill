@@ -31,6 +31,7 @@ extern globalvars_t				*gpGlobals;
 extern unsigned short g_sSparks;
 extern unsigned short g_sSpark;
 extern unsigned short g_sExplode;
+extern unsigned short g_sBubbleXplo;
 
 #define FTENT_SMOKETRAIL		0x00000010
 

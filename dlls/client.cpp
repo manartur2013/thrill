@@ -930,9 +930,10 @@ void ClientPrecache( void )
 	if (giPrecacheGrunt)
 		UTIL_PrecacheOther("monster_human_grunt");
 
-	g_sSparks	= PRECACHE_EVENT(1, "events/sparks.sc" );	// spark particles with gravity
-	g_sSpark	= PRECACHE_EVENT(1, "events/spark.sc" );	// single particle sprite, no gravity
-	g_sExplode	= PRECACHE_EVENT(1, "events/explode.sc" );	// explosion effect
+	g_sSparks		= PRECACHE_EVENT(1, "events/sparks.sc" );	// spark particles with gravity
+	g_sSpark		= PRECACHE_EVENT(1, "events/spark.sc" );	// single particle sprite, no gravity
+	g_sExplode		= PRECACHE_EVENT(1, "events/explode.sc" );	// explosion effect
+	g_sBubbleXplo	= PRECACHE_EVENT(1, "events/bubbles.sc" );
 
 	PRECACHE_SOUND("Common/TALK.WAV");
 }

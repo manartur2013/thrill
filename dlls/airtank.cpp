@@ -20,7 +20,7 @@
 #include "nodes.h"
 #include "player.h"
 
-class CAirtank : public CGrenade
+class CAirtank : public CBaseMonster
 {
 	void Spawn( void );
 	void Precache( void );
@@ -44,7 +44,7 @@ TYPEDESCRIPTION	CAirtank::m_SaveData[] =
 	DEFINE_FIELD( CAirtank, m_state, FIELD_INTEGER ),
 };
 
-IMPLEMENT_SAVERESTORE( CAirtank, CGrenade );
+IMPLEMENT_SAVERESTORE( CAirtank, CBaseMonster );
 
 
 void CAirtank :: Spawn( void )
@@ -61,7 +61,6 @@ void CAirtank :: Spawn( void )
 	SetTouch( &CAirtank::TankTouch );
 	SetThink( &CAirtank::TankThink );
 
-	pev->flags |= FL_MONSTER;
 	pev->takedamage		= DAMAGE_YES;
 	pev->health			= 20;
 	pev->dmg			= 50;
@@ -77,11 +76,37 @@ void CAirtank::Precache( void )
 
 void CAirtank :: Killed( entvars_t *pevAttacker, int iGib )
 {
-	pev->owner = ENT( pevAttacker );
+	Vector vecSpot;
+	float flFlags;
 
-	// UNDONE: this should make a big bubble cloud, not an explosion
+	vecSpot = pev->origin;
+	vecSpot.z += 16;
 
-	Explode( pev->origin, Vector( 0, 0, -1 ) );
+	flFlags = TE_EXPLFLAG_NODLIGHTS | TE_EXPLFLAG_NOPARTICLES;
+
+	PLAYBACK_EVENT_FULL( NULL, NULL, g_sBubbleXplo, 0.0, (float*)&vecSpot, (float*)&g_vecZero, 0.0, 0.0, 48, 0, 0, 0);
+
+	// make an explosion sound
+	MESSAGE_BEGIN( MSG_PAS, SVC_TEMPENTITY, pev->origin );
+			WRITE_BYTE( TE_EXPLOSION);
+			WRITE_COORD( vecSpot.x );
+			WRITE_COORD( vecSpot.y );
+			WRITE_COORD( vecSpot.z );
+			WRITE_SHORT( g_sModelIndexFireball );
+			WRITE_BYTE( 0 ); // scale * 10
+			WRITE_BYTE( 0  ); // framerate
+			WRITE_BYTE( flFlags );
+		MESSAGE_END();
+
+	pev->effects |= EF_NODRAW;
+	pev->solid = SOLID_NOT;
+	pev->takedamage = DAMAGE_NO;
+
+	RadiusDamage ( pev, pevAttacker, pev->dmg, CLASS_NONE, DMG_BLAST );
+
+	SetThink( &CBaseMonster::SUB_Remove );
+	pev->velocity = g_vecZero;
+	pev->nextthink = gpGlobals->time + 0.3;
 }
 
 

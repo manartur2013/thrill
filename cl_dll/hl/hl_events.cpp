@@ -276,6 +276,72 @@ void EV_Explode ( struct event_args_s *args  )
 		ThrowShrapnel(vecOrigin);
 }
 
+#define BUBBLE_VELOCITY_RANGE		200.0
+#define	BUBBLE_LIFE_TIME			1.5
+#define	BUBBLE_SIZE_MIN				0.3
+#define	BUBBLE_SIZE_MAX				0.6
+
+void EV_BubbleThink ( struct tempent_s *ent, float frametime, float currenttime )
+{
+	vec3_t org;
+	
+	if (currenttime < ent->entity.baseline.fuser1)
+		return;
+
+	org = ent->entity.prevstate.origin;
+
+	if ( gEngfuncs.PM_PointContents( org, NULL ) != CONTENTS_WATER ) 
+	{
+		// do not travel outside of water
+		ent->die = gEngfuncs.GetClientTime();
+		return;
+	}
+
+	ent->entity.baseline.origin[0] *= .9;
+	ent->entity.baseline.origin[1] *= .9;
+
+	if (ent->entity.baseline.origin[2] < 16.0)
+		ent->entity.baseline.origin[2] += 16.0;
+
+	ent->entity.baseline.fuser1 = gEngfuncs.GetClientTime() + 0.01;
+}
+
+void EV_BubbleExplode ( struct event_args_s *args  )
+{
+	TEMPENTITY* pBubble = NULL;
+	Vector vecOrigin, vecVel;
+	int iModel, iCount, i, j;
+
+	VectorCopy( args->origin, vecOrigin );
+	if ( args->iparam1 )
+		iCount = args->iparam1;
+	else
+		iCount = 8;
+
+	iModel = gEngfuncs.pEventAPI->EV_FindModelIndex( "sprites/bubble.spr" );	
+
+	for ( i = 0; i < iCount; i++ )
+	{
+		for( j = 0; j < 3; j++ )
+		{
+			vecVel[j] = gEngfuncs.pfnRandomFloat( -BUBBLE_VELOCITY_RANGE, BUBBLE_VELOCITY_RANGE );
+		}
+
+		pBubble = gEngfuncs.pEfxAPI->CL_TempEntAlloc( vecOrigin, gEngfuncs.hudGetModelByIndex(iModel) );
+		
+		if (!pBubble)
+			return;
+
+		pBubble->callback	= &EV_BubbleThink;
+		pBubble->flags		= FTENT_COLLIDEWORLD | FTENT_COLLIDEKILL | FTENT_CLIENTCUSTOM;
+		pBubble->die		= gEngfuncs.GetClientTime() + BUBBLE_LIFE_TIME + gEngfuncs.pfnRandomFloat(0.0, 1.0);
+
+		pBubble->entity.baseline.fuser1 = gEngfuncs.GetClientTime();
+		pBubble->entity.baseline.origin = vecVel;
+		pBubble->entity.curstate.scale = gEngfuncs.pfnRandomFloat( BUBBLE_SIZE_MIN, BUBBLE_SIZE_MAX );
+	}
+}
+
 /*
 ======================
 Game_HookEvents
@@ -317,5 +383,6 @@ void Game_HookEvents( void )
 	gEngfuncs.pfnHookEvent(	"events/shards.sc",					EV_Shards);
 	gEngfuncs.pfnHookEvent(	"events/spark.sc",					EV_Spark);
 	gEngfuncs.pfnHookEvent(	"events/explode.sc",				EV_Explode);
+	gEngfuncs.pfnHookEvent(	"events/bubbles.sc",				EV_BubbleExplode);
 }
 
