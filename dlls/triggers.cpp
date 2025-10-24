@@ -2624,6 +2624,12 @@ void CTargetCommand::Spawn( void )
 	if ( !FClassnameIs(pev, "target_command") )
 		pev->classname = MAKE_STRING("target_command");
 
+	if ( g_pGameRules->IsMultiplayer() )
+	{	
+		UTIL_Remove(this);
+		return;
+	}
+
 	pev->movetype = MOVETYPE_NONE;
 	pev->solid = SOLID_NOT;
 }
