@@ -104,6 +104,14 @@ void CAirtank :: Killed( entvars_t *pevAttacker, int iGib )
 
 	RadiusDamage ( pev, pevAttacker, pev->dmg, CLASS_NONE, DMG_BLAST );
 
+	if ( !FStringNull(pev->target) )
+	{
+		// quick hack to remove the target
+		m_iszKillTarget = pev->target;
+
+		SUB_UseTargets( this, USE_TOGGLE, 0 );
+	}
+
 	SetThink( &CBaseMonster::SUB_Remove );
 	pev->velocity = g_vecZero;
 	pev->nextthink = gpGlobals->time + 0.3;
