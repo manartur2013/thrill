@@ -2899,3 +2899,49 @@ void CTriggerPardon :: PardonThink( void )
 
 	pEntity->BecomeFree();
 }
+
+// kill the client no matter where (target_command won't do as "kill" command is privileged)
+class CTargetKillClient : public CBaseDelay
+{
+public:
+	void Spawn( void );
+	void Use ( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value );
+};
+
+LINK_ENTITY_TO_CLASS(target_killclient, CTargetKillClient);
+
+void CTargetKillClient :: Spawn( void )
+{
+	// singpleplayer only
+	if ( g_pGameRules->IsMultiplayer() )
+	{	
+		UTIL_Remove(this);
+		return;
+	}
+
+	pev->solid = SOLID_NOT;
+}
+
+void CTargetKillClient :: Use ( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value )
+{
+	edict_t *pClient;
+	CBasePlayer *pPlayer;
+
+	SetThink(&CBaseDelay::SUB_Remove);
+	pev->nextthink = gpGlobals->time + .1;
+
+	pClient = g_engfuncs.pfnPEntityOfEntIndex( 1 );
+
+	if ( !pClient )
+		return;
+
+	if ( !(pPlayer = (CBasePlayer *)Instance(pClient)) )
+		return;
+
+	if ( !pPlayer->IsAlive() )
+		return;
+	
+	pPlayer->pev->health = 0;
+	pPlayer->m_fCanRevive = FALSE;
+	pPlayer->Killed(pev, GIB_NEVER);
+}
