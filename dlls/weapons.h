@@ -17,8 +17,6 @@
 
 #include "effects.h"
 
-//#define XM_WEAPONS
-
 class CBasePlayer;
 extern int gmsgWeapPickup;
 
@@ -90,11 +88,6 @@ public:
 #define	WEAPON_SNARK			15
 #define WEAPON_CHUB				16
 #define WEAPON_FLARE			17
-
-#ifdef XM_WEAPONS
-#define WEAPON_XM25				18
-#define WEAPON_PLASMA			19
-#endif
 
 #define WEAPON_ALLWEAPONS		(~(1<<WEAPON_SUIT))
 
@@ -1005,46 +998,6 @@ private:
 	unsigned short m_usChubFire;
 
 };
-
-#ifdef XM_WEAPONS
-class CFlare : public CBasePlayerWeapon
-{
-public:
-	void Spawn( void );
-	void Precache( void );
-	int iItemSlot( void ) { return 5; }
-	int GetItemInfo(ItemInfo *p);
-
-	void PrimaryAttack( void );
-	BOOL Deploy( void );
-	BOOL CanHolster( void );
-	void Holster( int skiplocal = 0 );
-	void WeaponIdle( void );
-
-	virtual BOOL UseDecrement( void )
-	{ 
-	#if defined( CLIENT_WEAPONS )
-		return TRUE;
-	#else
-		return FALSE;
-	#endif
-	}
-};
-
-class CFlareGrenade : public CGrenade
-{
-public:
-	void Spawn( void );
-	static CFlareGrenade *ShootTimed( entvars_t *pevOwner, Vector vecStart, Vector vecVelocity, float time );
-	void EXPORT TumbleThink( void );
-	void EXPORT Ignite( void );
-
-	void EXPORT BounceTouch( CBaseEntity *pOther );
-	void BounceSound( void );
-
-	float m_igniteTime;
-};
-#endif
 
 class CLaserSpot : public CBaseEntity
 {

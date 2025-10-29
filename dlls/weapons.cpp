@@ -401,10 +401,6 @@ void W_Precache(void)
 	// hand grenade
 	UTIL_PrecacheOtherWeapon("weapon_handgrenade");
 
-#ifdef XM_WEAPONS
-	UTIL_PrecacheOtherWeapon( "weapon_flare" );
-#endif
-
 #if !defined( OEM_BUILD ) && !defined( HLDEMO_BUILD )
 	// squeak grenade
 	UTIL_PrecacheOtherWeapon( "weapon_snark" );
