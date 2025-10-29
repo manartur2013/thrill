@@ -440,10 +440,6 @@ SOURCE=.\explode.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\flare.cpp
-# End Source File
-# Begin Source File
-
 SOURCE=.\fly.cpp
 # End Source File
 # Begin Source File
@@ -828,19 +824,6 @@ SOURCE=.\laserdot.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\leech.cpp
-
-!IF  "$(CFG)" == "hl - Win32 Release"
-
-!ELSEIF  "$(CFG)" == "hl - Win32 Debug"
-
-# ADD CPP /GR
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
 SOURCE=.\lights.cpp
 
 !IF  "$(CFG)" == "hl - Win32 Release"
@@ -923,10 +906,6 @@ SOURCE=.\mortar.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\moss.cpp
-# End Source File
-# Begin Source File
-
 SOURCE=.\mp5.cpp
 
 !IF  "$(CFG)" == "hl - Win32 Release"
@@ -941,19 +920,6 @@ SOURCE=.\mp5.cpp
 # Begin Source File
 
 SOURCE=.\multiplay_gamerules.cpp
-
-!IF  "$(CFG)" == "hl - Win32 Release"
-
-!ELSEIF  "$(CFG)" == "hl - Win32 Debug"
-
-# ADD CPP /GR
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=.\nihilanth.cpp
 
 !IF  "$(CFG)" == "hl - Win32 Release"
 
@@ -1070,19 +1036,6 @@ SOURCE=..\pm_shared\pm_shared.c
 # Begin Source File
 
 SOURCE=.\python.cpp
-
-!IF  "$(CFG)" == "hl - Win32 Release"
-
-!ELSEIF  "$(CFG)" == "hl - Win32 Debug"
-
-# ADD CPP /GR
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=.\rat.cpp
 
 !IF  "$(CFG)" == "hl - Win32 Release"
 
@@ -1454,19 +1407,6 @@ SOURCE=.\world.cpp
 # Begin Source File
 
 SOURCE=.\xbowbolt.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\xen.cpp
-
-!IF  "$(CFG)" == "hl - Win32 Release"
-
-!ELSEIF  "$(CFG)" == "hl - Win32 Debug"
-
-# ADD CPP /GR
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
