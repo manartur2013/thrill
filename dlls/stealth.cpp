@@ -47,8 +47,14 @@ void CStealth :: Spawn( void )
 	pev->flags |= FL_MONSTER;
 	pev->takedamage		= DAMAGE_YES;
 
-	pev->health			= 100;
-	pev->effects		|= EF_BRIGHTLIGHT;	// apache hack
+	// if stealth has a target, assume it's high in the sky and requires
+	// a light effect so the model will never show as full black
+	if ( !FStringNull(pev->target) )
+	{
+		pev->effects		|= EF_BRIGHTLIGHT;
+		pev->health			= 100;
+	}
+	else pev->health		= 500;	// stayput stealth is harder to destroy
 
 //	MonsterInit();
 //	SetThink( &CStealth::MonsterThink );
