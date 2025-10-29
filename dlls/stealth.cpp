@@ -345,6 +345,9 @@ void CStealth::GibMonster( void )
 
 	BreakModel( vecSpot, Vector(0, 0, 200),m_iBodyGibs, 64 );
 	
+	pev->deadflag = DEAD_DEAD;
+	FCheckAITrigger();
+
 	SetThink( &CStealth::SUB_Remove );
 	pev->nextthink = gpGlobals->time + 0.1;
 
