@@ -427,35 +427,34 @@ void CBasePlayer :: TraceAttack( entvars_t *pevAttacker, float flDamage, Vector 
 {
 	if ( pev->takedamage )
 	{
-		m_LastHitGroup = ptr->iHitgroup;
+		m_LastHitGroup = ptr->iHitgroup;	// always keep the hitgroup for correct death animation
 
-		// quick hack to avoid crazy amounts of damage from hassassins of friendlies
-		if ( bitsDamageType & DMG_PARALYZE || bitsDamageType & DMG_SHOCK )
-			m_LastHitGroup = HITGROUP_GENERIC;
-
-		switch ( m_LastHitGroup )
-		{
-		case HITGROUP_GENERIC:
-			break;
-		case HITGROUP_HEAD:
-			flDamage *= gSkillData.plrHead;
-			break;
-		case HITGROUP_CHEST:
-			flDamage *= gSkillData.plrChest;
-			break;
-		case HITGROUP_STOMACH:
-			flDamage *= gSkillData.plrStomach;
-			break;
-		case HITGROUP_LEFTARM:
-		case HITGROUP_RIGHTARM:
-			flDamage *= gSkillData.plrArm;
-			break;
-		case HITGROUP_LEFTLEG:
-		case HITGROUP_RIGHTLEG:
-			flDamage *= gSkillData.plrLeg;
-			break;
-		default:
-			break;
+		if ( g_pGameRules->IsMultiplayer() )
+		{	
+			switch ( m_LastHitGroup )
+			{
+			case HITGROUP_GENERIC:
+				break;
+			case HITGROUP_HEAD:
+				flDamage *= gSkillData.plrHead;
+				break;
+			case HITGROUP_CHEST:
+				flDamage *= gSkillData.plrChest;
+				break;
+			case HITGROUP_STOMACH:
+				flDamage *= gSkillData.plrStomach;
+				break;
+			case HITGROUP_LEFTARM:
+			case HITGROUP_RIGHTARM:
+				flDamage *= gSkillData.plrArm;
+				break;
+			case HITGROUP_LEFTLEG:
+			case HITGROUP_RIGHTLEG:
+				flDamage *= gSkillData.plrLeg;
+				break;
+			default:
+				break;
+			}
 		}
 
 		SpawnBlood(ptr->vecEndPos, BloodColor(), flDamage);// a little surface blood.
