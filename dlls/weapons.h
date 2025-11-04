@@ -590,6 +590,8 @@ public:
 	void Holster( int skiplocal = 0 );
 	void Reload( void );
 	void WeaponIdle( void );
+	BOOL IsUseable( void );
+
 	float m_flNextAnimTime;
 	int m_iShell;
 

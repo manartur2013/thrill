@@ -297,6 +297,11 @@ void CMP5::WeaponIdle( void )
 	m_flTimeWeaponIdle = UTIL_SharedRandomFloat( m_pPlayer->random_seed, 10, 15 ); // how long till we do this again.
 }
 
+BOOL CMP5 :: IsUseable( void )
+{
+	return (m_pPlayer->m_rgAmmo[m_iSecondaryAmmoType] ? 1 : 0) || CBasePlayerWeapon :: IsUseable();
+}
+
 
 
 class CMP5AmmoClip : public CBasePlayerAmmo
