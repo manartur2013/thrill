@@ -177,19 +177,6 @@ SOURCE=.\ev_hldm.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\dlls\flare.cpp
-
-!IF  "$(CFG)" == "cl_dll - Win32 Release"
-
-!ELSEIF  "$(CFG)" == "cl_dll - Win32 Debug"
-
-# ADD CPP /MTd
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
 SOURCE=..\dlls\gauss.cpp
 
 !IF  "$(CFG)" == "cl_dll - Win32 Release"
