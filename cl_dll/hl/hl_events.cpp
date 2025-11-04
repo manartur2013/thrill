@@ -170,6 +170,7 @@ void EV_HornetTrail ( struct event_args_s *args )
 
 void EV_Shards ( struct event_args_s *args )
 {
+	TEMPENTITY *pShard;
 	Vector vecOrigin, vecVel;
 	float flSize;
 	int cFlag, iModel, iCount, iMax, i, j;
@@ -182,10 +183,7 @@ void EV_Shards ( struct event_args_s *args )
 
 	iModel = gEngfuncs.pEventAPI->EV_FindModelIndex( "sprites/shard.spr" );
 
-	cFlag = FTENT_COLLIDEWORLD | FTENT_SLOWGRAVITY | FTENT_SPRANIMATE;
-
-	cFlag |= FTENT_SPRANIMATELOOP; // let the sprite live some time?
-
+	cFlag = FTENT_COLLIDEWORLD | FTENT_SLOWGRAVITY;
 
 	iMax = 2;
 
@@ -202,7 +200,12 @@ void EV_Shards ( struct event_args_s *args )
 			vecVel[j] = gEngfuncs.pfnRandomFloat( -SHARD_VELOCITY_RANGE, SHARD_VELOCITY_RANGE );
 		}
 
-		gEngfuncs.pEfxAPI->R_TempSprite( vecOrigin, vecVel, gEngfuncs.pfnRandomFloat( SHARD_SIZE_MIN, SHARD_SIZE_MAX ), iModel, kRenderTransAdd, kRenderFxNoDissipation, 255.0, SHARD_LIFE_TIME, cFlag );
+		pShard = gEngfuncs.pEfxAPI->R_TempSprite( vecOrigin, vecVel, gEngfuncs.pfnRandomFloat( SHARD_SIZE_MIN, SHARD_SIZE_MAX ), iModel, kRenderTransAdd, kRenderFxNoDissipation, 255.0, SHARD_LIFE_TIME, cFlag );
+		
+		if (!pShard)
+			return;
+
+		pShard->entity.curstate.frame = gEngfuncs.pfnRandomLong(0,5);
 	}
 }
 
