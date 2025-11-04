@@ -35,7 +35,7 @@ enum tripmine_e {
 	TRIPMINE_HOLSTER,
 	TRIPMINE_DRAW,
 	TRIPMINE_WORLD,
-//	TRIPMINE_GROUND,
+	TRIPMINE_GROUND,
 };
 
 
@@ -368,7 +368,7 @@ void CTripmine::Spawn( )
 	SET_MODEL(ENT(pev), "models/v_tripmine.mdl");
 	pev->frame = 0;
 	pev->body = 3;
-	pev->sequence = TRIPMINE_WORLD;
+	pev->sequence = TRIPMINE_GROUND;
 	// ResetSequenceInfo( );
 	pev->framerate = 0;
 
