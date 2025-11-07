@@ -679,7 +679,11 @@ void ClientUserInfoChanged( edict_t *pEntity, char *infobuffer )
 		}
 	}
 
-	g_pGameRules->ClientUserInfoChanged( GetClassPtr((CBasePlayer *)&pEntity->v), infobuffer );
+	CBasePlayer *pPlayer = GetClassPtr((CBasePlayer *)&pEntity->v);
+
+	pPlayer->m_fAutoWeaponSwitch = atoi(g_engfuncs.pfnInfoKeyValue( infobuffer, "cl_autoswitch" ));
+
+	g_pGameRules->ClientUserInfoChanged( pPlayer, infobuffer );
 }
 
 static int g_serveractive = 0;

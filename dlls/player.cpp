@@ -4276,7 +4276,7 @@ int CBasePlayer::AddPlayerItem( CBasePlayerItem *pItem )
 		m_rgpPlayerItems[pItem->iItemSlot()] = pItem;
 
 		// should we switch to this item?
-		if ( g_pGameRules->FShouldSwitchWeapon( this, pItem ) )
+		if ( m_fAutoWeaponSwitch && g_pGameRules->FShouldSwitchWeapon( this, pItem ) )
 		{
 			SwitchWeapon( pItem );
 		}

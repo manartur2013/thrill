@@ -213,6 +213,7 @@ public:
 	BOOL				m_fCanRevive;
 	BOOL				m_fWpnScheduled;
 	BOOL				m_fParalyzed;
+	BOOL				m_fAutoWeaponSwitch;	// set by userinfo
 
 //	int m_iAlphaLadderFrame; 
 //	float m_iAlphaLadderSpeed; 

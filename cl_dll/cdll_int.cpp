@@ -159,6 +159,7 @@ int CL_DLLEXPORT Initialize( cl_enginefunc_t *pEnginefuncs, int iVersion )
 
 	// TEMP
 	CVAR_CREATE("cl_explosions", "2", FCVAR_ARCHIVE );
+	CVAR_CREATE("cl_autoswitch", "0", FCVAR_USERINFO );
 
 	// get tracker interface, if any
 	return 1;
