@@ -1208,7 +1208,7 @@ int CHudAmmo::DrawWList(float flTime)
 	// Amount of Radiation syringes
 
 //	x -= 40;
-	a = 128;
+	a = 255;
 
 	ScaleColors(r, g, b, a);
 
