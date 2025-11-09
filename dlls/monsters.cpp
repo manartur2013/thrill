@@ -3269,9 +3269,15 @@ void CBaseMonster :: MonsterInitDead( void )
 
 	// Setup health counters, etc.
 	//BecomeDead();
-	pev->takedamage = DAMAGE_YES;
-	pev->health = pev->max_health / 2;
-	pev->max_health = 5;
+	
+	if ( !(pev->spawnflags & 1) )
+	{
+		pev->takedamage = DAMAGE_YES;
+		pev->health = pev->max_health / 2;
+		pev->max_health = 5;
+	}
+	else pev->takedamage = DAMAGE_NO;
+
 	SetThink( &CBaseMonster::CorpseFallThink );
 	pev->nextthink = gpGlobals->time + 0.5;
 	if ( pev->spawnflags & SF_MONSTER_NOT_SOLID )
