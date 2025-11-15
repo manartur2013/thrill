@@ -44,8 +44,7 @@ void CCrowbar::Spawn( )
 	Precache( );
 	m_iId = WEAPON_CROWBAR;
 	SET_MODEL(ENT(pev), "models/w_crowbar.mdl");
-	m_iClip = 255;
-	m_iDefaultAmmo = 255;
+	m_iClip = -1;
 
 	FallInit();// get ready to fall down.
 }
@@ -69,11 +68,11 @@ void CCrowbar::Precache( void )
 int CCrowbar::GetItemInfo(ItemInfo *p)
 {
 	p->pszName = STRING(pev->classname);
-	p->pszAmmo1 = "crowbies";
-	p->iMaxAmmo1 = 255;
+	p->pszAmmo1 = NULL;
+	p->iMaxAmmo1 = -1;
 	p->pszAmmo2 = NULL;
 	p->iMaxAmmo2 = -1;
-	p->iMaxClip = CROWBAR_MAX_CLIP;
+	p->iMaxClip = WEAPON_NOCLIP;
 	p->iSlot = 0;
 	p->iPosition = 0;
 	p->iId = WEAPON_CROWBAR;

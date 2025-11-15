@@ -897,7 +897,7 @@ void CHudAmmo::UserCmd_PrevWeapon(void)
 int CHudAmmo::Draw(float flTime)
 {
 	int a, x, y, r, g, b;
-	int AmmoWidth;
+	int AmmoWidth, iIconWidth, iFlags;
 
 	if (!(gHUD.m_iWeaponBits & (1<<(WEAPON_SUIT)) ))
 		return 1;
@@ -917,13 +917,7 @@ int CHudAmmo::Draw(float flTime)
 	if (!m_pWeapon)
 		return 0;
 
-	WEAPON *pw = m_pWeapon; // shorthand
-
-	// SPR_Draw Ammo
-	if ((pw->iAmmoType < 0) && (pw->iAmmo2Type < 0))
-		return 0;
-
-
+	// Draw crosshair
 	if ( gHUD.m_pCvarCrosshair->value )
 	{
 		if ( CVAR_GET_FLOAT( "crosshair" ) )
@@ -933,9 +927,11 @@ int CHudAmmo::Draw(float flTime)
 			DrawCrosshairScalable(m_pWeapon->hCrosshair, m_pWeapon->rcCrosshair, 255, 255, 255);
 	}
 
-	int iFlags = DHN_DRAWZERO; // draw 0 values
+	WEAPON *pw = m_pWeapon; // shorthand
 
 	AmmoWidth = gHUD.GetSpriteRect(gHUD.m_HUD_number_0).right - gHUD.GetSpriteRect(gHUD.m_HUD_number_0).left;
+	iIconWidth = m_pWeapon->rcAmmo.right - m_pWeapon->rcAmmo.left;
+	iFlags = DHN_DRAWZERO; // draw 0 values
 	
 	// set basic alpha for ammo number
 	a = 144;
@@ -944,16 +940,20 @@ int CHudAmmo::Draw(float flTime)
 
 	ScaleColors(r, g, b, a );
 
-	// Does this weapon have a clip?
-//	y = ScreenHeight - gHUD.m_iFontHeight - gHUD.m_iFontHeight/2;
 	y = gHUD.m_iHudScaleHeight - 55;
 
+	// SPR_Draw Ammo
+	if ((pw->iAmmoType < 0) && (pw->iAmmo2Type < 0))
+	{	
+		x = gHUD.m_iHudScaleWidth - 4 * AmmoWidth;
+		gHUD.DrawHudNumberAmmo(x, y, iFlags | DHN_3DIGITS, 255, r, g, b);	// draw it "bugged"
+
+		return 0;
+	}
 
 	// Does weapon have any ammo at all?
 	if (m_pWeapon->iAmmoType >= 0)
 	{
-		int iIconWidth = m_pWeapon->rcAmmo.right - m_pWeapon->rcAmmo.left;
-		
 		if (pw->iClip >= 0)
 		{
 			// room for the number and the '|' and the current ammo
