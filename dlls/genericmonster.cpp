@@ -46,7 +46,7 @@ LINK_ENTITY_TO_CLASS( monster_generic, CGenericMonster );
 //=========================================================
 int	CGenericMonster :: Classify ( void )
 {
-	return	CLASS_PLAYER_ALLY;
+	return	CLASS_NONE;
 }
 
 //=========================================================
