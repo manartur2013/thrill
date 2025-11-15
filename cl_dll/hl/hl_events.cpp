@@ -63,6 +63,12 @@ void R_Blob2ParticlesCallback(struct particle_s *particle, float frametime)
 	// update position.
 	VectorMA( particle->org, frametime, particle->vel, particle->org);
 
+	if ( gEngfuncs.PM_PointContents( particle->org, NULL ) != CONTENTS_EMPTY ) 
+	{
+		particle->die = gEngfuncs.GetClientTime();
+		return;
+	}
+
 	particle->ramp += time2;
 
 	if( particle->ramp < 4.0 ) 
