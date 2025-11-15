@@ -362,7 +362,7 @@ void CHornet::DieTouch ( CBaseEntity *pOther )
 			case 2:	EMIT_SOUND( ENT(pev), CHAN_VOICE, "hornet/ag_hornethit3.wav", 1, ATTN_NORM);	break;
 		}
 			
-		pOther->TakeDamage( pev, VARS( pev->owner ), pev->dmg, DMG_BULLET );
+		pOther->TakeDamage( pev, VARS( pev->owner ), pev->dmg, DMG_SLASH );
 	}
 
 	pev->modelindex = 0;// so will disappear for the 0.1 secs we wait until NEXTTHINK gets rid
