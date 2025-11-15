@@ -399,6 +399,8 @@ void CSnapBug :: FindNearestPrey( void )
 	ALERT( at_console, "SnapTrap: Found the target!\n" );
 	EMIT_SOUND( ENT(pev), CHAN_WEAPON, "snapbug/sb_dig1.wav", 1, ATTN_NORM );
 	SetTouch ( &CSnapBug::LeapTouch );
+
+	ClearBits( pev->spawnflags, SF_SNAPBUG_TRAPMODE );
 }
 
 Schedule_t *CSnapBug :: GetSchedule ( void )
