@@ -44,8 +44,6 @@ enum
 	TASK_AGRUNT_GET_PATH_TO_ENEMY_CORPSE,
 };
 
-int iAgruntMuzzleFlash;
-
 //=========================================================
 // Monster's Anim Events Go Here
 //=========================================================
@@ -461,15 +459,6 @@ void CAGrunt :: HandleAnimEvent( MonsterEvent_t *pEvent )
 			GetAttachment( 0, vecArmPos, vecArmDir );
 
 			vecArmPos = vecArmPos + vecDirToEnemy * 32;
-			MESSAGE_BEGIN( MSG_PVS, SVC_TEMPENTITY, vecArmPos );
-				WRITE_BYTE( TE_SPRITE );
-				WRITE_COORD( vecArmPos.x );	// pos
-				WRITE_COORD( vecArmPos.y );	
-				WRITE_COORD( vecArmPos.z );	
-				WRITE_SHORT( iAgruntMuzzleFlash );		// model
-				WRITE_BYTE( 6 );				// size * 10
-				WRITE_BYTE( 128 );			// brightness
-			MESSAGE_END();
 
 			CBaseEntity *pHornet = CBaseEntity::Create( "hornet", vecArmPos, UTIL_VecToAngles( vecDirToEnemy ), edict() );
 			UTIL_MakeVectors ( pHornet->pev->angles );
@@ -636,8 +625,6 @@ void CAGrunt :: Precache()
 
 
 	PRECACHE_SOUND( "hassault/hw_shoot1.wav" );
-
-	iAgruntMuzzleFlash = PRECACHE_MODEL( "sprites/muz4.spr" );
 
 	UTIL_PrecacheOther( "hornet" );
 }	
