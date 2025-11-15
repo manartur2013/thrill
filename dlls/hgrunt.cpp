@@ -2082,6 +2082,7 @@ void CHGrunt :: SetActivity ( Activity NewActivity )
 			}
 			iSequence = LookupActivity ( NewActivity );
 		}
+		break;
 	case ACT_BIG_FLINCH:
 		// downgrade to small flinch
 		iSequence = LookupActivity ( ACT_SMALL_FLINCH );
