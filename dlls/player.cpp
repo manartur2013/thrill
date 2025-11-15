@@ -507,12 +507,15 @@ int CBasePlayer :: TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, 
 	// go take the damage first
 
 	
-	CBaseEntity *pAttacker = CBaseEntity::Instance(pevAttacker);
-
-	if ( !g_pGameRules->FPlayerCanTakeDamage( this, pAttacker ) )
+	if ( pevAttacker )
 	{
-		// Refuse the damage
-		return 0;
+		CBaseEntity *pAttacker = CBaseEntity::Instance(pevAttacker);
+
+		if ( !g_pGameRules->FPlayerCanTakeDamage( this, pAttacker ) )
+		{
+			// Refuse the damage
+			return 0;
+		}
 	}
 
 	if ( !(bitsDamageType & (DMG_FALL | DMG_DROWN)) )
