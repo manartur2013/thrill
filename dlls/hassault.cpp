@@ -119,7 +119,7 @@ private:
 	int		m_iSpinState;
 	int		m_iShootTarget;
 
-	float spinupDelay;
+	float m_flSpinupDelay;
 	float m_flWaitForEnemy;
 
 	static const char *pAttackMissSounds[];
@@ -161,7 +161,7 @@ void CHassault :: Spawn()
 	m_bloodColor		= BLOOD_COLOR_RED;
 	pev->effects		= 0;
 	pev->health			= gSkillData.hassaultHealth;
-	m_flFieldOfView		= VIEW_FIELD_FULL; //0.25;// indicates the width of this monster's forward view cone ( as a dotproduct result )
+	m_flFieldOfView		= VIEW_FIELD_FULL;
 	m_MonsterState		= MONSTERSTATE_COMBAT;
 
 	m_afCapability		= bits_CAP_SQUAD | bits_CAP_DOORS_GROUP;
@@ -170,7 +170,7 @@ void CHassault :: Spawn()
 
 	m_iSpinState = HASSAULT_NOT_SPINNING;
 
-	spinupDelay = 0.0;
+	m_flSpinupDelay = 0.0;
 
 	MonsterInit();
 }
@@ -802,8 +802,8 @@ Schedule_t *CHassault :: GetScheduleOfType ( int Type )
 			EMIT_SOUND( ENT(pev), CHAN_ITEM, "hassault/hw_spinup.wav", 1, ATTN_NORM );
 			RouteClear();
 		//	ALERT ( at_console, "Playing spinup sound!\n");
-			spinupDelay = gpGlobals->time + gSkillData.hassaultSpinupDelay;
-		//	ALERT ( at_console, "Time is: %.2f Delay is %.2f \n", gpGlobals->time, spinupDelay);
+			m_flSpinupDelay = gpGlobals->time + gSkillData.hassaultSpinupDelay;
+		//	ALERT ( at_console, "Time is: %.2f Delay is %.2f \n", gpGlobals->time, m_flSpinupDelay);
 			m_iSpinState = HASSAULT_SPINUP_BEGAN;
 			return &slHassaultSpinup[ 0 ];
 		}
@@ -836,10 +836,10 @@ Schedule_t *CHassault :: GetScheduleOfType ( int Type )
 
 void CHassault :: MonsterThink ( void )
 {
-	if ( m_iSpinState <= HASSAULT_SPINUP_BEGAN && spinupDelay != 0.0 && spinupDelay <= gpGlobals->time )
+	if ( m_iSpinState <= HASSAULT_SPINUP_BEGAN && m_flSpinupDelay != 0.0 && m_flSpinupDelay <= gpGlobals->time )
 	{
 	//	ALERT ( at_console, "HSarge: Spin in progress!\n");
-		spinupDelay = 0.0;
+		m_flSpinupDelay = 0.0;
 		m_iSpinState = HASSAULT_SPINNING;
 	}
 
@@ -903,7 +903,7 @@ void CHassault :: SpinDown( void )
 	m_iSpinState = HASSAULT_NOT_SPINNING;
 
 	EMIT_SOUND( ENT(pev), CHAN_ITEM, "hassault/hw_spindown.wav", 1, ATTN_NORM );
-	spinupDelay = 0.0;
+	m_flSpinupDelay = 0.0;
 }
 
 void CHassault :: MeleeAttack( float flDamage )
