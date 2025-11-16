@@ -748,7 +748,7 @@ Schedule_t *CHassault :: GetSchedule( void )
 					{
 					//	if ( RANDOM_LONG (1,3) > 1 )
 					//	{
-							ALERT ( at_console, "HSarge: Supressing!\n");
+							ALERT ( at_aiconsole, "HSarge: Supressing!\n");
 							m_flWaitForEnemy = gpGlobals->time + 8;
 							return GetScheduleOfType( SCHED_RANGE_ATTACK1 );
 					//	}
@@ -772,7 +772,7 @@ Schedule_t *CHassault :: GetSchedule( void )
 
 				if ( HasConditions(bits_COND_CAN_MELEE_ATTACK1) )
 				{
-					ALERT ( at_console, "HSarge: Melee Attack!\n" );
+					ALERT ( at_aiconsole, "HSarge: Melee Attack!\n" );
 					return GetScheduleOfType( SCHED_MELEE_ATTACK1 );
 				}
 
@@ -797,12 +797,9 @@ Schedule_t *CHassault :: GetScheduleOfType ( int Type )
 	{
 	case SCHED_SPINUP:
 		{
-//			ALERT ( at_console, "HSarge: Spinning up!\n");
-//			ALERT ( at_console, "HSarge: slHassaultSpinup!\n");
-
 			EMIT_SOUND( ENT(pev), CHAN_ITEM, "hassault/hw_spinup.wav", 1, ATTN_NORM );
 			RouteClear();
-		//	ALERT ( at_console, "Playing spinup sound!\n");
+
 			m_flSpinupDelay = gpGlobals->time + gSkillData.hassaultSpinupDelay;
 		//	ALERT ( at_console, "Time is: %.2f Delay is %.2f \n", gpGlobals->time, m_flSpinupDelay);
 			m_iSpinState = HASSAULT_SPINUP_BEGAN;
@@ -839,7 +836,6 @@ void CHassault :: MonsterThink ( void )
 {
 	if ( m_iSpinState <= HASSAULT_SPINUP_BEGAN && m_flSpinupDelay != 0.0 && m_flSpinupDelay <= gpGlobals->time )
 	{
-	//	ALERT ( at_console, "HSarge: Spin in progress!\n");
 		m_flSpinupDelay = 0.0;
 		m_iSpinState = HASSAULT_SPINNING;
 	}
@@ -898,7 +894,7 @@ void CHassault :: SpinDown( void )
 	STOP_SOUND( ENT(pev), CHAN_WEAPON, "hassault/hw_gun4.wav" );
 	STOP_SOUND( ENT(pev), CHAN_ITEM, "hassault/hw_spin.wav" );
 
-	ALERT ( at_console, "HSarge: Spin down!\n");
+	ALERT ( at_aiconsole, "HSarge: Spin down!\n");
 	EMIT_SOUND(ENT(pev), CHAN_ITEM, "common/null.wav", 1, ATTN_NORM);
 
 	m_iSpinState = HASSAULT_NOT_SPINNING;
@@ -970,14 +966,9 @@ BOOL CHassault :: FVisible ( CBaseEntity *pEntity )
 		}
 
 		UTIL_TraceLine(vecLookerOrigin, vecTargetOrigin, ignore_monsters, ignore_glass, ENT(pev)/*pentIgnore*/, &tr);
+		
 		if ( tr.flFraction == 1.0 )
-		{
-		//	if ( i == 0 ) ALERT ( at_console, "HSarge: Successful eyepos check!\n");
-		//	if ( i == 1 ) ALERT ( at_console, "HSarge: Successful center check!\n");
-		//	if ( i == 2 ) ALERT ( at_console, "HSarge: Successful feet check!\n");
-
 			return TRUE;
-		}
 	}
 	
 	return FALSE;

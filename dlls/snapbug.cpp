@@ -231,7 +231,7 @@ void CSnapBug :: LeapTouch ( CBaseEntity *pOther )
 		UTIL_TraceHull(pev->origin, vecEnd, dont_ignore_monsters, human_hull, edict(), &tr);
 		if ( tr.flFraction != 1.0 )
 		{
-			ALERT( at_console, "CSnapbug: Can't capture target as it will get stuck!\n" );
+			ALERT( at_aiconsole, "CSnapbug: Can't capture target as it will get stuck!\n" );
 			m_flHoldTime = gpGlobals->time + 1.0;
 			SetTouch( NULL );
 			return;
@@ -254,7 +254,7 @@ void CSnapBug :: LeapTouch ( CBaseEntity *pOther )
 
 	if ( FClassnameIs(pOther->pev, "monster_headcrab") || FClassnameIs(pOther->pev, "monster_chumtoad") || FClassnameIs(pOther->pev, "monster_cockroach") )
 	{
-//		ALERT( at_console, "Gibbed the crab!\n" );
+//		ALERT( at_aiconsole, "Gibbed the crab!\n" );
 		pOther->Killed( pev, GIB_ALWAYS );
 		m_flHoldTime = gpGlobals->time + 1.0;
 		SetTouch( NULL );
@@ -275,7 +275,7 @@ void CSnapBug :: ReleaseTarget( void )
 	m_fCatchPlayer = FALSE;
 	m_pVictimEdict = NULL;
 
-	ALERT( at_console, "CSnapBug: Released the target!\n" );
+	ALERT( at_aiconsole, "CSnapBug: Released the target!\n" );
 }
 
 void CSnapBug :: CatchTarget( void )
@@ -322,7 +322,7 @@ void CSnapBug :: SnapBugThink ( void )
 	// Do a check if we are too far from the target. If so, then leave it alone.
 	if ( pTouchEnt->pev->origin.z <= pev->origin.z || (pTouchEnt->pev->origin.z - VEC_HUMAN_HULL_MAX.z > pev->origin.z) || vecDistToTarget.Length() > SNAPBUG_MAX_DIST_TO_TARGET )
 	{
-		ALERT( at_console, "CSnapBug: Target's too far!\n" );
+		ALERT( at_aiconsole, "CSnapBug: Target's too far!\n" );
 		ReleaseTarget();
 		m_flHoldTime = gpGlobals->time + 1.5;
 		return;
@@ -330,7 +330,7 @@ void CSnapBug :: SnapBugThink ( void )
 
 	if ( gpGlobals->time < m_flHoldTime - 1.5 )
 	{
-	//	ALERT( at_console, "Here's my dinner!\n" );
+	//	ALERT( at_aiconsole, "Here's my dinner!\n" );
 		
 		// FIXME: sometimes it leads to target stucking in bsp geometry
 		// ... or does it? turning this off doesn't fix the issue
@@ -387,8 +387,6 @@ void CSnapBug :: FindNearestPrey( void )
 
 	pEntity = UTIL_FindEntityInSphere( pEntity, pev->origin, 40.0 );
 
-//	ALERT( at_console, "SnapTrap: Looking for a target!\n" );
-
 	if ( pEntity == NULL || !pEntity->Classify() || !pEntity->IsAlive() )	// only react to live entities
 		return;
 
@@ -396,7 +394,7 @@ void CSnapBug :: FindNearestPrey( void )
 		return;
 		
 	m_trapActivated = TRUE;
-	ALERT( at_console, "SnapTrap: Found the target!\n" );
+	ALERT( at_aiconsole, "SnapTrap: Found the target!\n" );
 	EMIT_SOUND( ENT(pev), CHAN_WEAPON, "snapbug/sb_dig1.wav", 1, ATTN_NORM );
 	SetTouch ( &CSnapBug::LeapTouch );
 
@@ -427,17 +425,17 @@ Schedule_t *CSnapBug :: GetSchedule ( void )
 		else
 		if ( HasConditions(bits_COND_LIGHT_DAMAGE) || HasConditions(bits_COND_HEAVY_DAMAGE) )
 		{
-			ALERT( at_console, "CSnapBug: Take cover!\n" );
+			ALERT( at_aiconsole, "CSnapBug: Take cover!\n" );
 			return GetScheduleOfType ( SCHED_TAKE_COVER_FROM_ORIGIN );	
 		}
 		else if ( !HasConditions ( bits_COND_SEE_FEAR ) && !HasConditions ( bits_COND_SEE_ENEMY ) )
 		{
-		//	ALERT( at_console, "CSnapBug: Face!\n" );
+		//	ALERT( at_aiconsole, "CSnapBug: Face!\n" );
 			return GetScheduleOfType ( SCHED_COMBAT_FACE );
 		}
 		else
 		{
-			ALERT( at_console, "CSnapBug: Take cover from enemy!\n" );
+			ALERT( at_aiconsole, "CSnapBug: Take cover from enemy!\n" );
 			return GetScheduleOfType ( SCHED_TAKE_COVER_FROM_ENEMY );
 		}				
 		break;
@@ -467,7 +465,7 @@ int CSnapBug::Restore( CRestore &restore )
 	// a way to prevent snapbug from disappearing on certain maps
 	if ( FBitSet( pev->spawnflags, SF_SNAPBUG_TRAPMODE ) && !m_trapActivated )
 	{
-		ALERT( at_console, "SnapBug: Restored origin!\n" );
+		ALERT( at_aiconsole, "SnapBug: Restored origin!\n" );
 		pev->origin = sbPreviousOrigin;
 		pev->origin.z -= SNAPBUG_PITHEIGHT;
 	}

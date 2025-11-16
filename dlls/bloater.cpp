@@ -335,7 +335,7 @@ IMPLEMENT_CUSTOM_SCHEDULES( CBloater, CSquadMonster );
 //=========================================================
 void CBloater :: RunAI ( void )
 {
-//	ALERT ( at_console, "CBloater: RunAI!\n" );
+//	ALERT ( at_aiconsole, "CBloater: RunAI!\n" );
 	
 	// FIXME: for some reason bloater fails to pass FIND_CLIENT_IN_PVS check in the original RunAI
 	// and i can't know why since its an engine function
@@ -402,7 +402,7 @@ void CBloater :: StartTask ( Task_t *pTask )
 			else
 			{
 				// no way to get there =(
-				ALERT ( at_console, "CBloater: GetPathToEnemy failed!!\n" );
+				ALERT ( at_aiconsole, "CBloater: GetPathToEnemy failed!!\n" );
 				TaskFail();
 			}
 			break;
@@ -478,7 +478,7 @@ Schedule_t *CBloater :: GetSchedule( void )
 			{
 				if ( HasConditions(bits_COND_CAN_MELEE_ATTACK1) )	// we've got too close
 				{
-					ALERT ( at_console, "CBloater: Got too close!\n" );
+					ALERT ( at_aiconsole, "CBloater: Got too close!\n" );
 					return GetScheduleOfType( SCHED_TAKE_COVER_FROM_ENEMY );
 				}
 				// we can see the enemy
@@ -524,7 +524,7 @@ Schedule_t* CBloater :: GetScheduleOfType ( int Type )
 		return slBloaterTakeCover;
 /*	case SCHED_WAKE_ANGRY:
 		{
-			ALERT ( at_console, "CBloater: Wake!\n");
+			ALERT ( at_aiconsole, "CBloater: Wake!\n");
 			return CSquadMonster::GetScheduleOfType( Type );
 		}*/
 	}
@@ -538,7 +538,7 @@ extern void DrawRoute( entvars_t *pev, WayPoint_t *m_Route, int m_iRouteIndex, i
 
 void CBloater :: Move ( float flInterval ) 
 {
-//	ALERT( at_console, "CBloater: Move\n" );
+//	ALERT( at_aiconsole, "CBloater: Move\n" );
 
 //	CSquadMonster :: Move (flInterval);
 //	return;
@@ -665,7 +665,7 @@ void CBloater :: Move ( float flInterval )
 		{
 			MoveExecute( pTargetEnt, vecDir, flCheckDist / m_flGroundSpeed );
 
-			// ALERT( at_console, "%.02f\n", flInterval );
+			// ALERT( at_aiconsole, "%.02f\n", flInterval );
 			AdvanceRoute( flWaypointDist );
 			flMoveDist -= flCheckDist;
 		}
@@ -723,15 +723,15 @@ int CBloater :: CheckLocalMove ( const Vector &vecStart, const Vector &vecEnd, C
 
 	UTIL_TraceHull( vecStart + Vector( 0, 0, 24), vecEnd + Vector( 0, 0, 24), dont_ignore_monsters, head_hull, edict(), &tr );
 
-	// ALERT( at_console, "%.0f %.0f %.0f : ", vecStart.x, vecStart.y, vecStart.z );
-	// ALERT( at_console, "%.0f %.0f %.0f\n", vecEnd.x, vecEnd.y, vecEnd.z );
+	// ALERT( at_aiconsole, "%.0f %.0f %.0f : ", vecStart.x, vecStart.y, vecStart.z );
+	// ALERT( at_aiconsole, "%.0f %.0f %.0f\n", vecEnd.x, vecEnd.y, vecEnd.z );
 
 	if (pflDist)
 	{
 		*pflDist = ( (tr.vecEndPos - Vector( 0, 0, 24 )) - vecStart ).Length();// get the distance.
 	}
 
-	// ALERT( at_console, "check %d %d %f\n", tr.fStartSolid, tr.fAllSolid, tr.flFraction );
+	// ALERT( at_aiconsole, "check %d %d %f\n", tr.fStartSolid, tr.fAllSolid, tr.flFraction );
 	if (tr.fStartSolid || tr.flFraction < 1.0)
 	{
 		if ( pTarget && pTarget->edict() == gpGlobals->trace_ent )
@@ -744,7 +744,7 @@ int CBloater :: CheckLocalMove ( const Vector &vecStart, const Vector &vecEnd, C
 
 void CBloater::MoveExecute( CBaseEntity *pTargetEnt, const Vector &vecDir, float flInterval )
 {
-//	ALERT( at_console, "CBloater: MoveExecute\n" );
+//	ALERT( at_aiconsole, "CBloater: MoveExecute\n" );
 	Vector2D vec2DirToPoint, vec2Forward;
 	vec2DirToPoint = ( m_Route[ 0 ].vecLocation - pev->origin ).Make2D().Normalize();
 	vec2Forward = gpGlobals->v_forward.Make2D().Normalize();
@@ -777,7 +777,7 @@ BOOL CBloater :: CheckRangeAttack1 ( float flDot, float flDist )
 
 	if ( flDist <= 768 && flDot >= 0.5 )
 	{
-	//	ALERT( at_console, "CBloater: Can rangeattack1!! \n" );
+	//	ALERT( at_aiconsole, "CBloater: Can rangeattack1!! \n" );
 		return TRUE;
 	}
 	return FALSE;
@@ -841,7 +841,7 @@ void CBloater::Shoot( void )
 
 void CBloater :: CallForHelp( char *szClassname, float flDist, EHANDLE hEnemy, Vector &vecLocation )
 {
-	ALERT( at_console, "CBloater: Help!! \n" );
+	ALERT( at_aiconsole, "CBloater: Help!! \n" );
 
 	// skip ones not on my netname
 	if ( FStringNull( pev->netname ))

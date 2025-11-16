@@ -224,7 +224,7 @@ void CBarnacle :: BarnacleThink ( void )
 
 				if ( pVictim )
 				{
-					ALERT( at_console, "the dinner is here\n" );
+					ALERT( at_aiconsole, "the dinner is here\n" );
 					pVictim->BarnacleVictimBitten( pev );
 					SetActivity ( ACT_EAT );
 				}
@@ -243,14 +243,13 @@ void CBarnacle :: BarnacleThink ( void )
 				// kill!
 				if ( pVictim )
 				{
-					ALERT( at_console, "CHOMP\n" );
+					ALERT( at_aiconsole, "CHOMP\n" );
 					pVictim->TakeDamage ( pev, pev, pVictim->pev->health, DMG_SLASH | DMG_ALWAYSGIB );
 					m_iGibType = pVictim->MainGib();
 
 					if ( pVictim->IsAlive() )
 					{
 						// somehow, the prey survived it
-						ALERT( at_console, "WHAT\n" );
 						pVictim->Killed( pev, GIB_ALWAYS );
 					}
 					m_cGibs = 3;
@@ -348,7 +347,7 @@ void CBarnacle :: BarnacleThink ( void )
 					{
 						if ( pEntity->pev->origin.z < pev->origin.z )
 						{
-							ALERT( at_console, "CBarnacle: Found prey via tracehull!\n" );
+							ALERT( at_aiconsole, "CBarnacle: Found prey via tracehull!\n" );
 							traceSuccessful = TRUE;
 							m_flWaitForPrey = gpGlobals->time + 3.0;
 						}
@@ -377,7 +376,7 @@ void CBarnacle :: BarnacleThink ( void )
 					if ( pEntity && pEntity->Classify() && pEntity->Classify() != CLASS_BARNACLE 
 						&& pEntity->Classify() != CLASS_INSECT )
 					{
-						ALERT( at_console, "CBarnacle: Found prey via sphere!\n" );
+						ALERT( at_aiconsole, "CBarnacle: Found prey via sphere!\n" );
 						m_flWaitForPrey = gpGlobals->time + 3.0;
 					}
 				}
@@ -416,7 +415,7 @@ void CBarnacle :: BarnacleThink ( void )
 
 	}
 
-	// ALERT( at_console, "tounge %f\n", m_flAltitude + m_flTongueAdj );
+	// ALERT( at_aiconsole, "tounge %f\n", m_flAltitude + m_flTongueAdj );
 	SetBoneController( 0, -(m_flAltitude + m_flTongueAdj) );
 	StudioFrameAdvance( 0.1 );
 }
@@ -526,7 +525,6 @@ CBaseEntity *CBarnacle :: TongueTouchEnt ( float *pflLength )
 		//	if ( pList[i] != this && IRelationship( pList[i] ) > R_NO && pList[i]->MyMonsterPointer()->IsBarnaclePrey() && pList[ i ]->pev->deadflag == DEAD_NO )	// this ent is one of our enemies. Barnacle tries to eat it.
 			if ( pList[i] != this && pList[i]->MyMonsterPointer()->IsBarnaclePrey() && pList[ i ]->pev->deadflag == DEAD_NO ) // the relationship check is excessive now that we have the IsBarnaclePrey function
 			{
-				ALERT (at_console, "MA FOAH\n");
 				return pList[i];
 			}
 		}

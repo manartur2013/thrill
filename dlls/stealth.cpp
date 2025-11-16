@@ -106,7 +106,7 @@ LINK_ENTITY_TO_CLASS( monster_stealth, CStealth );
 
 void CStealth :: MonsterUse( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value )
 {
-	ALERT( at_console, "Stealth: Use!\n" );
+	ALERT( at_aiconsole, "Stealth: Use!\n" );
 	if ( useType != ( USE_ON || USE_TOGGLE ) )
 		return;
 
@@ -132,11 +132,11 @@ void CStealth :: MonsterUse( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_
 
 void CStealth :: StealthThink( void )
 {
-//	ALERT( at_console, "Stealth: Think!\n" );
+//	ALERT( at_aiconsole, "Stealth: Think!\n" );
 	
 	if ( m_pGoalEnt == NULL )
 	{
-		ALERT( at_console, "Stealth: Goal entity is NULL!\n" );
+		ALERT( at_aiconsole, "Stealth: Goal entity is NULL!\n" );
 		pev->nextthink = gpGlobals->time + 5.0;
 		return;
 	}
@@ -149,7 +149,7 @@ void CStealth :: StealthThink( void )
 		}
 		else
 		{
-			ALERT( at_console, "Stealth: Reached a dead end!\n" );
+			ALERT( at_aiconsole, "Stealth: Reached a dead end!\n" );
 
 			STOP_SOUND( ENT(pev), CHAN_STATIC, "apache/ap_whine1.wav" );
 			m_pGoalEnt = NULL;
@@ -172,8 +172,8 @@ void CStealth :: StealthThink( void )
 	UTIL_DrawBeam( pev->origin, pev->velocity.Normalize(), 4, 96, 32 );
 	UTIL_DrawBeam( pev->origin, gpGlobals->v_right, 4, 32, 96 );
 
-//	ALERT (at_console, "%f\n", pev->angles.z );
-	ALERT (at_console, "%f\n", flSide );
+//	ALERT (at_aiconsole, "%f\n", pev->angles.z );
+	ALERT (at_aiconsole, "%f\n", flSide );
 
 	// roll
 
@@ -181,14 +181,14 @@ void CStealth :: StealthThink( void )
 	{
 		if ( pev->angles.z != 0 )
 		{
-			ALERT (at_console, "Stealth: undoing roll!\n" );
+			ALERT (at_aiconsole, "Stealth: undoing roll!\n" );
 			pev->avelocity.z += STEALTH_ROLLRATE * -(flSide/flSide);
 		}
 		else StopRolling();
 	} 
 	else */if ( flSide < 0 )
 	{
-		ALERT ( at_console, "Stealth: roll left\n" );
+		ALERT ( at_aiconsole, "Stealth: roll left\n" );
 		if ( pev->angles.z > -STEALTH_MAX_ROLL )
 			pev->avelocity.z -= STEALTH_ROLLRATE - ( STEALTH_ROLLRATE * flSide );
 		else
@@ -196,7 +196,7 @@ void CStealth :: StealthThink( void )
 	}
 	else if ( flSide > 0 )
 	{
-		ALERT ( at_console, "Stealth: roll right\n" );
+		ALERT ( at_aiconsole, "Stealth: roll right\n" );
 		if ( pev->angles.z < STEALTH_MAX_ROLL )
 			pev->avelocity.z += STEALTH_ROLLRATE - ( STEALTH_ROLLRATE * flSide );
 		else
@@ -219,7 +219,7 @@ void CStealth :: StealthThink( void )
 
 void CStealth :: StopRolling( void )
 {
-	ALERT( at_console, "Stealth: Stopped rolling!\n");
+	ALERT( at_aiconsole, "Stealth: Stopped rolling!\n");
 	pev->avelocity.z = 0;
 }
 

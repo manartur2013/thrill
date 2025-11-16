@@ -178,7 +178,7 @@ void CFly::RecalculateHeight( void )
 		{
 			// Stop right ther. We don't want flies to venture into the water
 			m_bottom = vecContent.z + 1;
-			ALERT ( at_console, "Fly: Found water underneath!\n" );
+			ALERT ( at_aiconsole, "Fly: Found water underneath!\n" );
 		}
 	}
 
@@ -241,7 +241,7 @@ float CFly::ObstacleDistance( CBaseEntity *pTarget )
 	if ( tr.fStartSolid )
 	{
 		pev->speed = -FLY_SPEED * 0.5;
-//		ALERT( at_console, "Stuck from (%f %f %f) to (%f %f %f)\n", pev->oldorigin.x, pev->oldorigin.y, pev->oldorigin.z, pev->origin.x, pev->origin.y, pev->origin.z );
+//		ALERT( at_aiconsole, "Stuck from (%f %f %f) to (%f %f %f)\n", pev->oldorigin.x, pev->oldorigin.y, pev->oldorigin.z, pev->origin.x, pev->origin.y, pev->origin.z );
 //		UTIL_SetOrigin( pev, pev->oldorigin );
 	}
 
@@ -254,7 +254,7 @@ float CFly::ObstacleDistance( CBaseEntity *pTarget )
 
 		if ( UTIL_PointContents ( vecContent ) == CONTENTS_WATER )
 		{
-			ALERT( at_console, "Fly: Found water at a distance of %f!\n", vecContent.Length() );
+			ALERT( at_aiconsole, "Fly: Found water at a distance of %f!\n", vecContent.Length() );
 			pev->effects = EF_BRIGHTFIELD;
 			if ( vecProbe.Length() != 0 )
 				return vecContent.Length()/vecProbe.Length();
@@ -387,7 +387,7 @@ void CFly::FlyThink( void )
 
 	if ( pev->waterlevel )
 	{
-		ALERT(at_console, "Fly: HELP\n");
+		ALERT(at_aiconsole, "Fly: HELP\n");
 		if ( pev->movetype != MOVETYPE_BOUNCE )
 		{
 			pev->velocity = g_vecZero;
@@ -493,7 +493,7 @@ void CFly :: KillUse ( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE u
 	if ( RANDOM_LONG(0,1) )
 		CFly::Killed(pCaller->pev, GIB_ALWAYS);
 //	else
-//		ALERT( at_console, "CFly: Try again, LOSER!!!\n" );
+//		ALERT( at_aiconsole, "CFly: Try again, LOSER!!!\n" );
 }
 
 //=========================================================

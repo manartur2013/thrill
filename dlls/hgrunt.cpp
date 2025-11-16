@@ -474,8 +474,6 @@ BOOL CHGrunt :: CheckMeleeAttack2 ( float flDot, float flDist )
 		if ( CVAR_GET_FLOAT("sv_drawroute") )
 			UTIL_ParticleEffect( EyePosition(), pev->origin + gpGlobals->v_up * 16, 251, 4 );
 
-	//	ALERT( at_console, "time to stop runandgunnin\n" );
-
 		return TRUE;
 	}
 
@@ -583,7 +581,7 @@ BOOL CHGrunt :: CheckRangeAttack2 ( float flDot, float flDist )
 	{
 		if (SquadMemberInRange( vecTarget, 256 ))
 		{
-			ALERT( at_console, "HGrunt: Friendly in grenade area!\n" );
+			ALERT( at_aiconsole, "HGrunt: Friendly in grenade area!\n" );
 			// crap, I might blow my own guy up. Don't throw a grenade and don't check again for a while.
 			m_flNextGrenadeCheck = gpGlobals->time + 1; // one full second.
 			m_fThrowGrenade = FALSE;
@@ -1040,7 +1038,6 @@ void CHGrunt :: Spawn()
 	{
 		// initialize to original values
 		pev->weapons = HGRUNT_9MMAR | HGRUNT_HANDGRENADE;
-	//	ALERT( at_console, "HGrunt: Initialize weapon\n" );
 	}
 
 	m_cClipSize		= GRUNT_CLIP_SIZE;
@@ -1160,7 +1157,7 @@ void CHGrunt :: StartTask ( Task_t *pTask )
 				if ( DotProduct ( vec2DirToPoint, vec2RightSide ) > 0 )
 				{
 					// strafe right
-					ALERT( at_console, "Strafing right!\n" );
+					ALERT( at_aiconsole, "Strafing right!\n" );
 					if ( DotProduct ( vec2Forward, vec2ToEnemy ) < 0.25 && HasConditions(bits_COND_CAN_RANGE_ATTACK1) )
 						pev->sequence = LookupSequence( "straferight_fire" );
 					else
@@ -1169,7 +1166,7 @@ void CHGrunt :: StartTask ( Task_t *pTask )
 				else if ( DotProduct ( vec2DirToPoint, vec2LeftSide ) > 0 )
 				{
 					// strafe left
-					ALERT( at_console, "Strafing left!\n" );
+					ALERT( at_aiconsole, "Strafing left!\n" );
 					if ( DotProduct ( vec2Forward, vec2ToEnemy ) < 0.25 && HasConditions(bits_COND_CAN_RANGE_ATTACK1) )
 						pev->sequence = LookupSequence( "strafeleft_fire" );
 					else
@@ -1179,7 +1176,7 @@ void CHGrunt :: StartTask ( Task_t *pTask )
 			else
 			{
 				CSquadMonster ::StartTask( pTask );
-				ALERT( at_console, "Can't strafe!\n" );
+				ALERT( at_aiconsole, "Can't strafe!\n" );
 			}
 			TaskComplete();
 		}
@@ -2072,11 +2069,8 @@ void CHGrunt :: SetActivity ( Activity NewActivity )
 	case ACT_DIESIMPLE:
 	case ACT_DIE_HEADSHOT:
 		{
-		//	ALERT ( at_console, "CHGrunt: ACT_DIE_HEADSHOT\n" );
-		//	EMIT_SOUND( ENT(pev), CHAN_ITEM, "hgrunt/gr_headshot.wav", 1, ATTN_NORM );
 			if ( m_fHeadBlowup )
 			{
-			//	ALERT ( at_console, "CHGrunt: Head blown!\n" );
 				SetBodygroup( HEAD_GROUP, HEAD_BLOWN );
 				CGib :: SpawnStickyGibs ( pev, pev->origin, 6, STICKYGIB_PINK );
 			}
@@ -2252,7 +2246,6 @@ Schedule_t *CHGrunt :: GetSchedule( void )
 				//!!!KELLY - this individual just realized he's out of bullet ammo. 
 				// He's going to try to find cover to run to and reload, but rarely, if 
 				// none is available, he'll drop and reload in the open here. 
-				ALERT ( at_console, "HGrunt: Need to reload!\n" );
 				return GetScheduleOfType ( SCHED_GRUNT_COVER_AND_RELOAD );
 			}
 			
@@ -2266,7 +2259,7 @@ Schedule_t *CHGrunt :: GetSchedule( void )
 
 				if ( iPercent <= 50 && m_hEnemy != NULL )
 				{
-					ALERT ( at_console, "HGrunt: Taking cover from enemy!\n" );
+					ALERT ( at_aiconsole, "HGrunt: Taking cover from enemy!\n" );
 					// only try to take cover if we actually have an enemy!
 
 					//!!!KELLY - this grunt was hit and is going to run to cover.
@@ -2314,7 +2307,6 @@ Schedule_t *CHGrunt :: GetSchedule( void )
 				if ( 1 /*OccupySlot ( bits_SLOTS_HGRUNT_ENGAGE )*/ )
 				{
 					// try to take an available ENGAGE slot
-				//	ALERT ( at_console, "HGrunt: Range Attack 1!\n" );
 					return GetScheduleOfType( SCHED_RANGE_ATTACK1 );
 				}
 				else if ( HasConditions ( bits_COND_CAN_RANGE_ATTACK2 ) && OccupySlot( bits_SLOTS_HGRUNT_GRENADE ) )
@@ -2416,7 +2408,7 @@ Schedule_t* CHGrunt :: GetScheduleOfType ( int Type )
 				// hgrunts constantly dropping grenades is stupid, set grenadecover chance to 10%
 				if ( iPercent >= 90 )
 				{	
-					ALERT( at_console, "HGrunt: slGruntGrenadeCover!\n" );
+					ALERT( at_aiconsole, "HGrunt: slGruntGrenadeCover!\n" );
 					return &slGruntGrenadeCover[ 0 ];
 				}
 				else
@@ -2723,7 +2715,7 @@ void CHGrunt :: MonsterThink ( void )
 		}
 		else if ( pev->sequence == LookupSequence( "runandgun" ) ) 
 		{
-			ALERT( at_console, "HGrunt: RunAndGun aborted!\n" );
+			ALERT( at_aiconsole, "HGrunt: RunAndGun aborted!\n" );
 			SetActivity ( ACT_RUN );
 		}
 	}
@@ -2742,7 +2734,7 @@ void CHGrunt :: MonsterThink ( void )
 				pev->sequence = LookupSequence( "strafeleft_fire" );
 			else if (m_Activity == ACT_STRAFE_RIGHT)
 				pev->sequence = LookupSequence( "straferight_fire" );
-			ALERT( at_console, "HGrunt: Strafefire!\n" );
+			ALERT( at_aiconsole, "HGrunt: Strafefire!\n" );
 		}
 	}
 
@@ -2752,7 +2744,7 @@ void CHGrunt :: MonsterThink ( void )
 			SetActivity ( ACT_STRAFE_LEFT );
 		else if (pev->sequence == LookupSequence( "straferight_fire" ))
 			SetActivity ( ACT_STRAFE_RIGHT );
-		ALERT( at_console, "HGrunt: Strafefire aborted!\n" );
+		ALERT( at_aiconsole, "HGrunt: Strafefire aborted!\n" );
 	}
 }
 
@@ -2819,12 +2811,12 @@ BOOL CHGrunt :: FindLateralCover ( const Vector &vecThreat, const Vector &vecVie
 			{
 				if ( MoveToLocation( ACT_STRAFE_LEFT, 0, vecLeftTest ) )
 				{
-					ALERT( at_console, "Strafe is allowed!\n" );
+					ALERT( at_aiconsole, "Strafe is allowed!\n" );
 					m_fCanStrafe = TRUE;
 				}
 				if ( MoveToLocation( ACT_RUN, 0, vecLeftTest ) )
 				{
-					ALERT( at_console, "Found lateral!\n" );
+					ALERT( at_aiconsole, "Found lateral!\n" );
 					return TRUE;
 				}
 			}
@@ -2839,12 +2831,12 @@ BOOL CHGrunt :: FindLateralCover ( const Vector &vecThreat, const Vector &vecVie
 			{
 				if ( MoveToLocation( ACT_STRAFE_RIGHT, 0, vecRightTest ) )
 				{
-					ALERT( at_console, "Strafe is allowed!\n" );
+					ALERT( at_aiconsole, "Strafe is allowed!\n" );
 					m_fCanStrafe = TRUE;
 				}
 				if ( MoveToLocation( ACT_RUN, 0, vecRightTest ) )
 				{
-					ALERT( at_console, "Found lateral!\n" );
+					ALERT( at_aiconsole, "Found lateral!\n" );
 					return TRUE;
 				}
 			}

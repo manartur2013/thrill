@@ -718,7 +718,7 @@ void CStukaBat :: RunAI ( void )
 
 float CStukaBat :: ChangeYaw( int yawSpeed )
 {
-//	ALERT(at_console, "Stukabat: ChangeYaw\n");
+//	ALERT(at_aiconsole, "Stukabat: ChangeYaw\n");
 	
 	if ( pev->movetype == MOVETYPE_FLY )
 	{
@@ -834,7 +834,7 @@ void CStukaBat :: CallForHelp( float flDist )
 {
 	CBaseEntity *pEntity = NULL;
 
-	ALERT(at_console, "Stukabat: Help!\n");
+	ALERT(at_aiconsole, "Stukabat: Help!\n");
 
 	BOOL doCheck = TRUE;
 	
@@ -863,7 +863,7 @@ void CStukaBat :: CallForHelp( float flDist )
 			
 			if (d <= flDist)
 			{
-				ALERT(at_console, "Stukabat: grabbed a buddie\n");
+				ALERT(at_aiconsole, "Stukabat: grabbed a buddie\n");
 				if ( pStuka->m_iSleepState == STUKA_ASLEEP )
 					pStuka->Wake();
 				
@@ -880,7 +880,7 @@ void CStukaBat :: CallForHelp( float flDist )
 //=========================================================
 Activity CStukaBat :: GetStoppedActivity( void )
 { 
-//	ALERT(at_console, "Stukabat: GetStoppedActivity\n");
+//	ALERT(at_aiconsole, "Stukabat: GetStoppedActivity\n");
 	if ( pev->movetype != MOVETYPE_FLY )		
 		return ACT_CROUCHIDLE;
 
@@ -924,12 +924,12 @@ void CStukaBat :: StartTask ( Task_t *pTask )
 			
 			if ( !m_fDeathMidAir ) 
 			{
-				ALERT(at_console, "Stukabat: Ground death\n");
+				ALERT(at_aiconsole, "Stukabat: Ground death\n");
 				pev->sequence = LookupSequence("Die_on_ground");
 			}
 			else
 			{
-				ALERT(at_console, "Stukabat: Fall death\n");
+				ALERT(at_aiconsole, "Stukabat: Fall death\n");
 				if ( RANDOM_LONG(1,10) > 5 )
 					pev->sequence = LookupSequence("Death_fall_simple");
 				else
@@ -1056,7 +1056,7 @@ void CStukaBat :: RunTask ( Task_t *pTask )
 
 			if ( HasConditions(bits_COND_CAN_RANGE_ATTACK2) || m_flLastDiveAttack + STUKA_DIVE_TIME < gpGlobals->time )
 			{
-				ALERT(at_console, "Stukabat: Stopped diving!\n");
+				ALERT(at_aiconsole, "Stukabat: Stopped diving!\n");
 				m_fDiving = FALSE;
 				m_Activity = ACT_RESET;
 				TaskComplete();
@@ -1074,7 +1074,7 @@ void CStukaBat :: RunTask ( Task_t *pTask )
 //=========================================================
 void CStukaBat::Move(float flInterval)
 {
-//	ALERT(at_console, "Stukabat: Move\n");
+//	ALERT(at_aiconsole, "Stukabat: Move\n");
 	if ( pev->movetype == MOVETYPE_FLY )
 		CFlyingMonster::Move( flInterval );
 	else
@@ -1120,8 +1120,8 @@ void CStukaBat::MoveExecute( CBaseEntity *pTargetEnt, const Vector &vecDir, floa
 			m_vecTravel = (vecMove - pev->origin);
 			m_vecTravel = m_vecTravel.Normalize();
 			UTIL_MoveToOrigin(ENT(pev), vecMove, (m_flGroundSpeed * flInterval), MOVE_STRAFE);
-		//	ALERT(at_console, "Flying Monster: LOCALMOVE_VALID\n");
-		//	ALERT( at_console, "Speed is %.0f Speed * flInterval is %.0f\n", m_flightSpeed, (m_flGroundSpeed * flInterval) );
+		//	ALERT(at_aiconsole, "Flying Monster: LOCALMOVE_VALID\n");
+		//	ALERT( at_aiconsole, "Speed is %.0f Speed * flInterval is %.0f\n", m_flightSpeed, (m_flGroundSpeed * flInterval) );
 		}
 		else
 		{
@@ -1129,7 +1129,7 @@ void CStukaBat::MoveExecute( CBaseEntity *pTargetEnt, const Vector &vecDir, floa
 			m_stopTime = gpGlobals->time;
 			m_vecTravel = g_vecZero;
 			pev->velocity = g_vecZero;
-		//	ALERT(at_console, "Stukabat: LOCALMOVE_INVALID\n");
+		//	ALERT(at_aiconsole, "Stukabat: LOCALMOVE_INVALID\n");
 		}		
 	}
 	else
@@ -1143,16 +1143,16 @@ void CStukaBat::MoveExecute( CBaseEntity *pTargetEnt, const Vector &vecDir, floa
 
 int CStukaBat :: CheckLocalMove ( const Vector &vecStart, const Vector &vecEnd, CBaseEntity *pTarget, float *pflDist )
 {
-//	ALERT(at_console, "Stukabat: CheckLocalMove\n");
+//	ALERT(at_aiconsole, "Stukabat: CheckLocalMove\n");
 	TraceResult tr;
 
 //	UTIL_TraceHull( vecStart, vecEnd, dont_ignore_monsters, point_hull, edict(), &tr );
 	TRACE_MONSTER_HULL(edict(), vecStart + Vector(0, 0, 16), vecEnd + Vector(0, 0, 16), dont_ignore_monsters, edict(), &tr);
 
-	// ALERT( at_console, "%.0f %.0f %.0f : ", vecStart.x, vecStart.y, vecStart.z );
-	// ALERT( at_console, "%.0f %.0f %.0f\n", vecEnd.x, vecEnd.y, vecEnd.z );
+	// ALERT( at_aiconsole, "%.0f %.0f %.0f : ", vecStart.x, vecStart.y, vecStart.z );
+	// ALERT( at_aiconsole, "%.0f %.0f %.0f\n", vecEnd.x, vecEnd.y, vecEnd.z );
 
-	// ALERT( at_console, "check %d %d %f\n", tr.fStartSolid, tr.fAllSolid, tr.flFraction );
+	// ALERT( at_aiconsole, "check %d %d %f\n", tr.fStartSolid, tr.fAllSolid, tr.flFraction );
 	if ( tr.flFraction >= 1.0 )
 		return LOCALMOVE_VALID;
 
@@ -1162,7 +1162,7 @@ int CStukaBat :: CheckLocalMove ( const Vector &vecStart, const Vector &vecEnd, 
 		if ( pTarget && pTarget->edict() == gpGlobals->trace_ent )
 			return LOCALMOVE_VALID;
 		return LOCALMOVE_INVALID;
-		ALERT( at_console, "LOCALMOVE_INVALID\n" );
+		ALERT( at_aiconsole, "LOCALMOVE_INVALID\n" );
 	}
 
 	return LOCALMOVE_VALID;
@@ -1207,14 +1207,14 @@ MONSTERSTATE CStukaBat :: GetIdealState ( void )
 //=========================================================
 Schedule_t* CStukaBat :: GetScheduleOfType ( int Type ) 
 {
-//	ALERT ( at_console, "Sched Type:%d\n", Type );
+//	ALERT ( at_aiconsole, "Sched Type:%d\n", Type );
 	
 	switch	( Type )
 	{
 	case SCHED_FAIL:
 	case SCHED_CHASE_ENEMY_FAILED:
 		{
-			ALERT ( at_console, "Stukabat: Fail\n" );
+			ALERT ( at_aiconsole, "Stukabat: Fail\n" );
 
 			return &slStukaFail[ 0 ];
 		}
@@ -1228,12 +1228,12 @@ Schedule_t* CStukaBat :: GetScheduleOfType ( int Type )
 		}
 	case SCHED_STUKA_TAKEOFF:
 		{
-			ALERT ( at_console, "Stukabat: Taking off!\n" );
+			ALERT ( at_aiconsole, "Stukabat: Taking off!\n" );
 			return &slStukaTakeoff[ 0 ];
 		}
 	case SCHED_STUKA_DETACH:
 		{
-			ALERT ( at_console, "Stukabat: Wake\n" );
+			ALERT ( at_aiconsole, "Stukabat: Wake\n" );
 			m_iSleepState = STUKA_WAKING;
 			return &slStukaWake[ 0 ];
 		}
@@ -1289,7 +1289,7 @@ Schedule_t* CStukaBat :: GetScheduleOfType ( int Type )
 //=========================================================
 Schedule_t *CStukaBat :: GetSchedule ( void )
 {
-//	ALERT ( at_console, "StukaBat: GetSchedule\n" );
+//	ALERT ( at_aiconsole, "StukaBat: GetSchedule\n" );
 	switch	( m_MonsterState )
 	{
 		case MONSTERSTATE_IDLE:
@@ -1334,7 +1334,7 @@ Schedule_t *CStukaBat :: GetSchedule ( void )
 			}
 			else if ( HasConditions(bits_COND_SMELL_FOOD) && FShouldEat() )
 			{	
-				ALERT ( at_console, "Stukabat: Found food!\n" );
+				ALERT ( at_aiconsole, "Stukabat: Found food!\n" );
 				// food is right out in the open. Just go get it.
 				return GetScheduleOfType( SCHED_STUKA_EAT );
 			}
@@ -1392,11 +1392,11 @@ Schedule_t *CStukaBat :: GetSchedule ( void )
 			else  
 			{
 				// we can see the enemy
-				ALERT ( at_console, "Stukabat: I can see the enemy!\n" );
+				ALERT ( at_aiconsole, "Stukabat: I can see the enemy!\n" );
 
 				if ( HasConditions(bits_COND_CAN_RANGE_ATTACK2) )
 				{
-					ALERT ( at_console, "Stukabat: Claw!\n" );
+					ALERT ( at_aiconsole, "Stukabat: Claw!\n" );
 					pev->velocity.z = g_vecZero.z;
 					return GetScheduleOfType ( SCHED_RANGE_ATTACK2 );
 				}
@@ -1416,7 +1416,7 @@ Schedule_t *CStukaBat :: GetSchedule ( void )
 						TraceResult tr;
 						Vector vecToEnemy;
 
-						ALERT ( at_console, "Stukabat: Dive check\n" );
+						ALERT ( at_aiconsole, "Stukabat: Dive check\n" );
 
 						vecToEnemy = (m_hEnemy->pev->origin - pev->origin).Normalize();
 
@@ -1429,7 +1429,7 @@ Schedule_t *CStukaBat :: GetSchedule ( void )
 							pEntity = (CBaseEntity*)Instance(tr.pHit);
 							if (pEntity == m_hEnemy)
 							{	
-								ALERT ( at_console, "Stukabat: Diving!\n" );
+								ALERT ( at_aiconsole, "Stukabat: Diving!\n" );
 								m_flLastDiveAttack = gpGlobals->time;
 								return GetScheduleOfType( SCHED_STUKA_DIVE );
 							}
@@ -1446,7 +1446,7 @@ Schedule_t *CStukaBat :: GetSchedule ( void )
 				}
 				else
 				{
-					ALERT ( at_console, "Stukabat: Chase!\n" );
+					ALERT ( at_aiconsole, "Stukabat: Chase!\n" );
 					// keep chasing as attack sequences are played on fly
 					return GetScheduleOfType( SCHED_CHASE_ENEMY );
 				}
@@ -1459,7 +1459,7 @@ Schedule_t *CStukaBat :: GetSchedule ( void )
 		{
 			if ( m_fDeathMidAir )
 			{
-				ALERT(at_console, "Stukabat: Death fall\n");
+				ALERT(at_aiconsole, "Stukabat: Death fall\n");
 				return GetScheduleOfType( SCHED_STUKA_DIEFALL);
 			}
 
@@ -1532,7 +1532,7 @@ void CStukaBat :: Killed( entvars_t *pevAttacker, int iGib )
 
 void CStukaBat :: Wake ( void )
 {
-//	ALERT(at_console, "Stukabat: Provoked!\n");
+//	ALERT(at_aiconsole, "Stukabat: Provoked!\n");
 
 	m_IdealMonsterState = MONSTERSTATE_ALERT;
 	SetConditions ( bits_MEMORY_PROVOKED );
@@ -1540,7 +1540,7 @@ void CStukaBat :: Wake ( void )
 
 void CStukaBat :: Use ( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value )
 {
-//	ALERT(at_console, "Stukabat: Using!\n");
+//	ALERT(at_aiconsole, "Stukabat: Using!\n");
 
 	if ( useType != USE_ON )
 		return;
