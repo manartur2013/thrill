@@ -475,6 +475,9 @@ Activity CBaseMonster :: GetDeathActivity ( void )
 		return m_IdealActivity;
 	}
 
+	if ( ( m_bitsDamageType & DMG_BLAST ) && ( LookupActivity( ACT_DIEVIOLENT ) != ACTIVITY_NOT_AVAILABLE ) )
+		return ACT_DIEVIOLENT;
+
 	vecSrc = Center();
 
 	fTriedDirection = FALSE;
@@ -574,21 +577,6 @@ Activity CBaseMonster :: GetDeathActivity ( void )
 			{
 				ALERT( at_console, "Not enough space for ACT_DIEBACKWARD, forcing ACT_DIESIMPLE\n" );
 				deathActivity = ACT_DIESIMPLE;
-			}
-	}
-
-	if ( deathActivity == ACT_DIESIMPLE )
-	{
-			if ( RANDOM_LONG ( 0,100 ) > 65 )
-			{
-				deathActivity = ACT_DIEVIOLENT; // there is a chance of creature dying violently
-				ALERT( at_console, "Violent death!\n" );
-				if ( LookupActivity ( deathActivity ) == ACTIVITY_NOT_AVAILABLE )
-				{
-					// downgrade to DIESIMPLE
-				//	ALERT( at_console, "Monster does not feature ACT_DIEVIOLENT! Good for them, i guess...\n" );
-					deathActivity = ACT_DIESIMPLE;
-				}
 			}
 	}
 
