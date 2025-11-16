@@ -512,6 +512,7 @@ Schedule_t slHassaultChase[] =
 		tlHassaultChase,
 		ARRAYSIZE ( tlHassaultChase ),
 		bits_COND_NEW_ENEMY			|
+		bits_COND_SEE_ENEMY			|
 		bits_COND_CAN_RANGE_ATTACK1	|
 		bits_COND_CAN_MELEE_ATTACK1	|
 		bits_COND_LIGHT_DAMAGE		|
