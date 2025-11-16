@@ -993,6 +993,7 @@ public:
 	void	KeyValue( KeyValueData *pkvd );
 	void	Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value );
 	virtual int	ObjectCaps( void ) { return CBaseToggle :: ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
+	void	MyBlocked( CBaseEntity *pOther );
 
 	virtual int	Save( CSave &save );
 	virtual int	Restore( CRestore &restore );
@@ -1042,6 +1043,9 @@ void CMomentaryDoor::Spawn( void )
 	SetTouch( NULL );
 	
 	Precache();
+
+	if (pev->dmg)
+		SetBlocked( &CMomentaryDoor::MyBlocked );
 }
 	
 void CMomentaryDoor::Precache( void )
@@ -1160,4 +1164,9 @@ void CMomentaryDoor::StopMoveSound()
 	STOP_SOUND(ENT(pev), CHAN_STATIC, (char*)STRING(pev->noiseMoving));
 	EMIT_SOUND(ENT(pev), CHAN_STATIC, (char*)STRING(pev->noiseArrived), 1, ATTN_NORM);
 	SetThink( NULL );
+}
+
+void CMomentaryDoor::MyBlocked( CBaseEntity *pOther )
+{
+	pOther->TakeDamage( pev, pev, pev->dmg, DMG_CRUSH );
 }
