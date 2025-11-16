@@ -2750,6 +2750,8 @@ public:
 	void Spawn( void );
 	void KeyValue( KeyValueData *pkvd );
 	void EXPORT UpdateTouch( CBaseEntity *pOther );
+	void EXPORT UpdateThink( void );
+	void SendUpdate( CBasePlayer* pPlayer );
 
 	virtual int		Save( CSave &save );
 	virtual int		Restore( CRestore &restore );
@@ -2796,6 +2798,11 @@ void CTriggerSuitUpdate :: KeyValue( KeyValueData *pkvd )
 		m_flWait = atof(pkvd->szValue);
 		pkvd->fHandled = TRUE;
 	}
+	else if (FStrEq(pkvd->szKeyName, "delay"))
+	{
+		m_flDelay = atof(pkvd->szValue);
+		pkvd->fHandled = TRUE;
+	}
 	else
 		CBaseDelay::KeyValue( pkvd );
 }
@@ -2823,6 +2830,19 @@ void CTriggerSuitUpdate :: Spawn( void )
 	UTIL_SetOrigin( pev, pev->origin );
 }
 
+void CTriggerSuitUpdate :: SendUpdate( CBasePlayer* pPlayer )
+{
+	if ( !m_iszSentence )
+		return;
+
+	char szUpdate[64];
+
+	sprintf(szUpdate, "%s", STRING(m_iszSentence));
+
+	pPlayer->SetSuitUpdate(szUpdate, FALSE, m_iNoRepeat);
+
+}
+
 void CTriggerSuitUpdate :: UpdateTouch( CBaseEntity *pOther )
 {
 	if (!pOther->IsPlayer())
@@ -2838,17 +2858,40 @@ void CTriggerSuitUpdate :: UpdateTouch( CBaseEntity *pOther )
 	if ( !(pPlayer->pev->weapons & (1<<WEAPON_SUIT)) )
 		return;
 
-	if ( m_iszSentence )
+	if ( m_flDelay )
 	{
-		char szUpdate[64];
+		SetThink(&CTriggerSuitUpdate::UpdateThink);
+		SetTouch(NULL);
+		pev->nextthink = gpGlobals->time + m_flDelay;
+		pev->solid = SOLID_NOT;
 
-		sprintf(szUpdate, "%s", STRING(m_iszSentence));
-
-		pPlayer->SetSuitUpdate(szUpdate, FALSE, m_iNoRepeat);
+		return;
 	}
+
+	SendUpdate( pPlayer );
 
 	if ( pev->spawnflags & SF_TRIGGER_UPDATE_TARGETONCE )
 		UTIL_Remove( this );
+}
+
+void CTriggerSuitUpdate :: UpdateThink( void )
+{
+	CBasePlayer *pPlayer;
+
+	pPlayer = (CBasePlayer *)Instance( g_engfuncs.pfnPEntityOfEntIndex( 1 ) );
+
+	SendUpdate( pPlayer );
+	SetThink(NULL);
+
+	if ( pev->spawnflags & SF_TRIGGER_UPDATE_TARGETONCE )
+	{
+		UTIL_Remove(this);
+	}
+	else
+	{
+		SetTouch(&CTriggerSuitUpdate::UpdateTouch);
+		pev->solid = SOLID_TRIGGER;
+	}
 }
 
 class CTriggerPardon : public CBaseDelay
