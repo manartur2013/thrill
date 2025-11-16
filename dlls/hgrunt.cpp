@@ -2304,21 +2304,7 @@ Schedule_t *CHGrunt :: GetSchedule( void )
 					}
 				}
 
-				if ( 1 /*OccupySlot ( bits_SLOTS_HGRUNT_ENGAGE )*/ )
-				{
-					// try to take an available ENGAGE slot
-					return GetScheduleOfType( SCHED_RANGE_ATTACK1 );
-				}
-				else if ( HasConditions ( bits_COND_CAN_RANGE_ATTACK2 ) && OccupySlot( bits_SLOTS_HGRUNT_GRENADE ) )
-				{
-					// throw a grenade if can and no engage slots are available
-					return GetScheduleOfType( SCHED_RANGE_ATTACK2 );
-				}
-				else
-				{
-					// hide!
-					return GetScheduleOfType( SCHED_TAKE_COVER_FROM_ENEMY );
-				}
+				return GetScheduleOfType( SCHED_RANGE_ATTACK1 );
 			}
 // can't see enemy
 			else if ( HasConditions( bits_COND_ENEMY_OCCLUDED ) )
