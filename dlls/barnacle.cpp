@@ -343,7 +343,7 @@ void CBarnacle :: BarnacleThink ( void )
 				{
 					pEntity = (CBaseMonster*)Instance(tr.pHit);
 					if ( pEntity && pEntity->IsAlive() && pEntity->Classify() && pEntity->Classify() != CLASS_BARNACLE
-						&& pEntity->Classify() != CLASS_INSECT )
+						&& pEntity->Classify() != CLASS_INSECT && pEntity->pev->waterlevel < 3 )
 					{
 						if ( pEntity->pev->origin.z < pev->origin.z )
 						{
@@ -374,7 +374,7 @@ void CBarnacle :: BarnacleThink ( void )
 					pEntity = (CBaseMonster*)UTIL_FindEntityInSphere( pEntity, vecCenter, searchRadius );
 
 					if ( pEntity && pEntity->Classify() && pEntity->Classify() != CLASS_BARNACLE 
-						&& pEntity->Classify() != CLASS_INSECT )
+						&& pEntity->Classify() != CLASS_INSECT && pEntity->pev->waterlevel < 3 )
 					{
 						ALERT( at_aiconsole, "CBarnacle: Found prey via sphere!\n" );
 						m_flWaitForPrey = gpGlobals->time + 3.0;
