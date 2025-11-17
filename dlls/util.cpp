@@ -1377,14 +1377,8 @@ void UTIL_GunshotDecalTrace( TraceResult *pTrace, int decalNumber )
 	if (pTrace->flFraction == 1.0)
 		return;
 
-	MESSAGE_BEGIN( MSG_PAS, SVC_TEMPENTITY, pTrace->vecEndPos );
-		WRITE_BYTE( TE_GUNSHOTDECAL );
-		WRITE_COORD( pTrace->vecEndPos.x );
-		WRITE_COORD( pTrace->vecEndPos.y );
-		WRITE_COORD( pTrace->vecEndPos.z );
-		WRITE_SHORT( (short)ENTINDEX(pTrace->pHit) );
-		WRITE_BYTE( index );
-	MESSAGE_END();
+	// UNDONE: make this an event
+	UTIL_ParticleEffect( pTrace->vecEndPos, Vector(0, 0, 0), 0, 12 );
 }
 
 
