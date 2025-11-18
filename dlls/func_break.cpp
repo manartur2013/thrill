@@ -788,7 +788,7 @@ void CBreakable::Die( void )
 	// Build a box above the entity that looks like an 8 pixel high sheet
 	Vector mins = pev->absmin;
 	Vector maxs = pev->absmax;
-	mins.z = pev->absmax.z;
+//	mins.z = pev->absmax.z;
 	maxs.z += 8;
 
 	// BUGBUG -- can only find 256 entities on a breakable -- should be enough
