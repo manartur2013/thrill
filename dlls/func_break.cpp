@@ -822,7 +822,7 @@ void CBreakable::Die( void )
 		vecItemPos = VecBModelOrigin(pev);
 
 		if ( FBitSet( pev->spawnflags, SF_BREAK_NOFALL ) ) 
-			vecItemPos.z = pev->absmin.z + 1.0;
+			vecItemPos.z = pev->absmin.z + 2.0;
 
 		pent = CREATE_NAMED_ENTITY( MAKE_STRING((char *)STRING(m_iszSpawnObject)));
 
