@@ -1259,16 +1259,6 @@ void UTIL_BloodDecalTrace( TraceResult *pTrace, int bloodColor )
 	}
 }
 
-#if 1
-void UTIL_MossDecalTrace( TraceResult *pTrace, int currentStage )
-{
-	if ( currentStage != DECAL_MOSS4 )
-	{
-		UTIL_DecalTrace( pTrace, currentStage + 1 );
-	}
-}
-#endif
-
 void UTIL_DecalTrace( TraceResult *pTrace, int decalNumber )
 {
 	short entityIndex;
