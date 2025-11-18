@@ -351,6 +351,53 @@ void EV_BubbleExplode ( struct event_args_s *args  )
 	}
 }
 
+void R_SmokeParticleCallback(struct particle_s *particle, float frametime)
+{
+	VectorMA( particle->org, frametime, particle->vel, particle->org);
+
+	if ( gEngfuncs.PM_PointContents( particle->org, NULL ) != CONTENTS_EMPTY ) 
+	{
+		particle->die = gEngfuncs.GetClientTime();	// dont go through BSP
+		return;
+	}
+
+	particle->vel[2] += 1;
+}
+
+#define SMOKE_VELOCITY_RANGE	8.0
+
+void EV_Smoke ( struct event_args_s *args  )
+{
+	particle_t *p;
+	Vector vecOrigin;
+	int iCount, i, j;
+
+	VectorCopy( args->origin, vecOrigin );
+	if ( args->iparam1 )
+		iCount = args->iparam1;
+	else
+		iCount = 12;
+
+	for ( i = 0; i < iCount; i++ )
+	{
+		p = gEngfuncs.pEfxAPI->R_AllocParticle( R_SmokeParticleCallback );
+
+		if (!p)
+			return;
+		
+		for ( j = 0; j < 3; j++ )
+			p->org[j] = vecOrigin[j] + gEngfuncs.pfnRandomFloat(-1.0, 1.0);
+
+		p->vel[0] = gEngfuncs.pfnRandomFloat(-SMOKE_VELOCITY_RANGE, SMOKE_VELOCITY_RANGE);
+		p->vel[1] = gEngfuncs.pfnRandomFloat(-SMOKE_VELOCITY_RANGE, SMOKE_VELOCITY_RANGE);
+		p->vel[2] = SMOKE_VELOCITY_RANGE + gEngfuncs.pfnRandomFloat(0.0, SMOKE_VELOCITY_RANGE);
+
+		p->color = gEngfuncs.pfnRandomLong(1, 5);
+
+		p->die = gEngfuncs.GetClientTime() + gEngfuncs.pfnRandomFloat(2.0, 4.0);
+	}
+}
+
 /*
 ======================
 Game_HookEvents
@@ -393,5 +440,6 @@ void Game_HookEvents( void )
 	gEngfuncs.pfnHookEvent(	"events/spark.sc",					EV_Spark);
 	gEngfuncs.pfnHookEvent(	"events/explode.sc",				EV_Explode);
 	gEngfuncs.pfnHookEvent(	"events/bubbles.sc",				EV_BubbleExplode);
+	gEngfuncs.pfnHookEvent(	"events/smoke.sc",					EV_Smoke);
 }
 

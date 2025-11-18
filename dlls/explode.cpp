@@ -248,15 +248,8 @@ void CEnvExplosion::Smoke( void )
 {
 	if ( !( pev->spawnflags & SF_ENVEXPLOSION_NOSMOKE ) )
 	{
-		MESSAGE_BEGIN( MSG_PAS, SVC_TEMPENTITY, pev->origin );
-			WRITE_BYTE( TE_SMOKE );
-			WRITE_COORD( pev->origin.x );
-			WRITE_COORD( pev->origin.y );
-			WRITE_COORD( pev->origin.z );
-			WRITE_SHORT( g_sModelIndexSmoke );
-			WRITE_BYTE( (BYTE)m_spriteScale ); // scale * 10
-			WRITE_BYTE( 12  ); // framerate
-		MESSAGE_END();
+
+		UTIL_SmokeEffect( pev->origin, RANDOM_LONG(32,48));
 	}
 	
 	if ( !(pev->spawnflags & SF_ENVEXPLOSION_REPEATABLE) )

@@ -960,16 +960,13 @@ void CBaseTurret ::	TurretDeath( void )
 
 	if (pev->dmgtime + RANDOM_FLOAT( 0, 2 ) > gpGlobals->time)
 	{
-		// lots of smoke
-		MESSAGE_BEGIN( MSG_BROADCAST, SVC_TEMPENTITY );
-			WRITE_BYTE( TE_SMOKE );
-			WRITE_COORD( RANDOM_FLOAT( pev->absmin.x, pev->absmax.x ) );
-			WRITE_COORD( RANDOM_FLOAT( pev->absmin.y, pev->absmax.y ) );
-			WRITE_COORD( pev->origin.z - m_iOrientation * 64 );
-			WRITE_SHORT( g_sModelIndexSmoke );
-			WRITE_BYTE( 25 ); // scale * 10
-			WRITE_BYTE( 10 - m_iOrientation * 5); // framerate
-		MESSAGE_END();
+		Vector vecSrc;
+
+		vecSrc.x = RANDOM_FLOAT( pev->absmin.x, pev->absmax.x );
+		vecSrc.y = RANDOM_FLOAT( pev->absmin.y, pev->absmax.y );
+		vecSrc.z = pev->origin.z - m_iOrientation * 64;
+
+		UTIL_SmokeEffect( vecSrc, RANDOM_LONG(16,24));
 	}
 	
 	if (pev->dmgtime + RANDOM_FLOAT( 0, 5 ) > gpGlobals->time)

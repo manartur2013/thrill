@@ -938,6 +938,7 @@ void ClientPrecache( void )
 	g_sSpark		= PRECACHE_EVENT(1, "events/spark.sc" );	// single particle sprite, no gravity
 	g_sExplode		= PRECACHE_EVENT(1, "events/explode.sc" );	// explosion effect
 	g_sBubbleXplo	= PRECACHE_EVENT(1, "events/bubbles.sc" );
+	g_sSmoke		= PRECACHE_EVENT(1, "events/smoke.sc" );
 
 	PRECACHE_SOUND("Common/TALK.WAV");
 }

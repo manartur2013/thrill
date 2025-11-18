@@ -35,6 +35,7 @@ unsigned short g_sSparks;
 unsigned short g_sSpark;
 unsigned short g_sExplode;
 unsigned short g_sBubbleXplo;
+unsigned short g_sSmoke;
 
 float UTIL_WeaponTimeBase( void )
 {
@@ -1390,6 +1391,11 @@ void UTIL_Sparks( const Vector &position )
 void UTIL_Spark( const Vector &position )
 {
 	PLAYBACK_EVENT_FULL( NULL, NULL, g_sSpark, 0.0, (float*)&position, (float*)&g_vecZero, 0.0, 0.0, 0, 0, 0, 0);
+}
+
+void UTIL_SmokeEffect( const Vector &vecOrigin, ULONG ulCount )
+{
+	PLAYBACK_EVENT_FULL( NULL, NULL, g_sSmoke, 0.0, (float*)&vecOrigin, (float*)&g_vecZero, 0.0, 0.0, ulCount, 0, 0, 0);
 }
 
 

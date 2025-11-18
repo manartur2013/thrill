@@ -243,15 +243,7 @@ void CApache :: DyingThink( void )
 		MESSAGE_END();
 
 		// lots of smoke
-		MESSAGE_BEGIN( MSG_PVS, SVC_TEMPENTITY, pev->origin );
-			WRITE_BYTE( TE_SMOKE );
-			WRITE_COORD( pev->origin.x + RANDOM_FLOAT( -150, 150 ));
-			WRITE_COORD( pev->origin.y + RANDOM_FLOAT( -150, 150 ));
-			WRITE_COORD( pev->origin.z + RANDOM_FLOAT( -150, -50 ));
-			WRITE_SHORT( g_sModelIndexSmoke );
-			WRITE_BYTE( 100 ); // scale * 10
-			WRITE_BYTE( 10  ); // framerate
-		MESSAGE_END();
+		UTIL_SmokeEffect( Vector(pev->origin.x + RANDOM_FLOAT( -150, 150 ), pev->origin.y + RANDOM_FLOAT( -150, 150 ), pev->origin.z + RANDOM_FLOAT( -150, -50 )), RANDOM_LONG(24,32));
 
 		Vector vecSpot = pev->origin + (pev->mins + pev->maxs) * 0.5;
 		MESSAGE_BEGIN( MSG_PVS, SVC_TEMPENTITY, vecSpot );
@@ -322,15 +314,8 @@ void CApache :: DyingThink( void )
 		MESSAGE_END();
 		
 		// big smoke
-		MESSAGE_BEGIN( MSG_PVS, SVC_TEMPENTITY, vecSpot );
-			WRITE_BYTE( TE_SMOKE );
-			WRITE_COORD( vecSpot.x );
-			WRITE_COORD( vecSpot.y );
-			WRITE_COORD( vecSpot.z + 512 );
-			WRITE_SHORT( g_sModelIndexSmoke );
-			WRITE_BYTE( 250 ); // scale * 10
-			WRITE_BYTE( 5  ); // framerate
-		MESSAGE_END();
+		UTIL_SmokeEffect( Vector(vecSpot.x, vecSpot.y, vecSpot.z + 512), RANDOM_LONG(24,32));
+
 
 		// blast circle
 		MESSAGE_BEGIN( MSG_PVS, SVC_TEMPENTITY, pev->origin );
@@ -771,15 +756,7 @@ void CApache :: FireRocket( void )
 	case 4: break;
 	}
 
-	MESSAGE_BEGIN( MSG_PVS, SVC_TEMPENTITY, vecSrc );
-		WRITE_BYTE( TE_SMOKE );
-		WRITE_COORD( vecSrc.x );
-		WRITE_COORD( vecSrc.y );
-		WRITE_COORD( vecSrc.z );
-		WRITE_SHORT( g_sModelIndexSmoke );
-		WRITE_BYTE( 20 ); // scale * 10
-		WRITE_BYTE( 12 ); // framerate
-	MESSAGE_END();
+	UTIL_SmokeEffect( vecSrc, RANDOM_LONG(16,24));
 
 	CBaseEntity *pRocket = CBaseEntity::Create( "hvr_rocket", vecSrc, pev->angles, edict() );
 	if (pRocket)
@@ -879,15 +856,7 @@ void CApache :: ShowDamage( void )
 {
 	if (m_iDoSmokePuff > 0 || RANDOM_LONG(0,99) > pev->health)
 	{
-		MESSAGE_BEGIN( MSG_PVS, SVC_TEMPENTITY, pev->origin );
-			WRITE_BYTE( TE_SMOKE );
-			WRITE_COORD( pev->origin.x );
-			WRITE_COORD( pev->origin.y );
-			WRITE_COORD( pev->origin.z - 32 );
-			WRITE_SHORT( g_sModelIndexSmoke );
-			WRITE_BYTE( RANDOM_LONG(0,9) + 20 ); // scale * 10
-			WRITE_BYTE( 12 ); // framerate
-		MESSAGE_END();
+		UTIL_SmokeEffect( Vector(pev->origin.x, pev->origin.y, pev->origin.z - 32), RANDOM_LONG(24,32));
 	}
 	if (m_iDoSmokePuff > 0)
 		m_iDoSmokePuff--;

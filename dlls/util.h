@@ -32,6 +32,7 @@ extern unsigned short g_sSparks;
 extern unsigned short g_sSpark;
 extern unsigned short g_sExplode;
 extern unsigned short g_sBubbleXplo;
+extern unsigned short g_sSmoke;
 
 #define FTENT_SMOKETRAIL		0x00000010
 
@@ -256,6 +257,7 @@ extern void			UTIL_ShowMessageAll		( const char *pString );
 extern void			UTIL_ScreenFadeAll		( const Vector &color, float fadeTime, float holdTime, int alpha, int flags );
 extern void			UTIL_ScreenFade			( CBaseEntity *pEntity, const Vector &color, float fadeTime, float fadeHold, int alpha, int flags );
 extern void			UTIL_DrawBeam			( Vector vecStart, Vector vecEnd, int r, int g, int b );
+extern void			UTIL_SmokeEffect		( const Vector &vecOrigin, ULONG ulCount );
 
 typedef enum { ignore_monsters=1, dont_ignore_monsters=0, missile=2 } IGNORE_MONSTERS;
 typedef enum { ignore_glass=1, dont_ignore_glass=0 } IGNORE_GLASS;
