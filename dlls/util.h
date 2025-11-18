@@ -106,11 +106,12 @@ typedef int BOOL;
 	extern "C" UTIL_DLLEXPORT void mapClassName( entvars_t *pev ); \
 	void mapClassName( entvars_t *pev ) { GetClassPtr( (DLLClassName *)pev ); }
 
+#define PARANOID
 
 //
 // Conversion among the three types of "entity", including identity-conversions.
 //
-#ifdef DEBUG
+#if defined( DEBUG ) || defined( PARANOID )
 	extern edict_t *DBG_EntOfVars(const entvars_t *pev);
 	inline edict_t *ENT(const entvars_t *pev)	{ return DBG_EntOfVars(pev); }
 #else

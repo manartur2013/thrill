@@ -317,7 +317,7 @@ TYPEDESCRIPTION	gEntvarsDescription[] =
 #define ENTVARS_COUNT		(sizeof(gEntvarsDescription)/sizeof(gEntvarsDescription[0]))
 
 
-#ifdef	DEBUG
+#if defined( DEBUG ) || defined( PARANOID )
 edict_t *DBG_EntOfVars( const entvars_t *pev )
 {
 	if (pev->pContainingEntity != NULL)
