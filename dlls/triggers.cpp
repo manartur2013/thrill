@@ -1728,7 +1728,7 @@ int CChangeLevel::ChangeList( LEVELLIST *pLevelList, int maxList )
 					saveHelper.EntityFlagsSet( index, entityFlags[j] | (1<<i) );
 				}
 				else
-					ALERT( at_console, "Screened out %s\n", STRING(pEntList[j]->pev->classname) );
+					ALERT( at_aiconsole, "Screened out %s\n", STRING(pEntList[j]->pev->classname) );
 
 			}
 		}

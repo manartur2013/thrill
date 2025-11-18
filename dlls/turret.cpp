@@ -373,7 +373,6 @@ void CBaseTurret::Initialize(void)
 
 	if (m_iOrientation == 1)
 	{
-		ALERT(at_console, "Turret: Setting up for ceiling placement!\n");
 		pev->idealpitch = 180;
 		pev->angles.x = 180;
 		pev->view_ofs.z = -pev->view_ofs.z;

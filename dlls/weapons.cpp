@@ -1065,7 +1065,7 @@ BOOL CBasePlayerWeapon :: DefaultDeploy( char *szViewModel, char *szWeaponModel,
 	if (!CanDeploy( ))
 		return FALSE;
 
-	ALERT ( at_console, "%s: DefaultDeploy\n", STRING(m_pPlayer->m_pActiveItem->pev->classname) );
+//	ALERT ( at_console, "%s: DefaultDeploy\n", STRING(m_pPlayer->m_pActiveItem->pev->classname) );
 
 	m_pPlayer->TabulateAmmo();
 	m_pPlayer->pev->viewmodel = MAKE_STRING(szViewModel);

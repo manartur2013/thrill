@@ -563,7 +563,7 @@ Activity CBaseMonster :: GetDeathActivity ( void )
 
 			if ( tr.flFraction != 1.0 )
 			{
-				ALERT( at_console, "Not enough space for ACT_DIEFORWARD, forcing ACT_DIESIMPLE\n" );
+				ALERT( at_aiconsole, "Not enough space for ACT_DIEFORWARD, forcing ACT_DIESIMPLE\n" );
 				deathActivity = ACT_DIESIMPLE;
 			}
 	}
@@ -575,7 +575,7 @@ Activity CBaseMonster :: GetDeathActivity ( void )
 
 			if ( tr.flFraction != 1.0 )
 			{
-				ALERT( at_console, "Not enough space for ACT_DIEBACKWARD, forcing ACT_DIESIMPLE\n" );
+				ALERT( at_aiconsole, "Not enough space for ACT_DIEBACKWARD, forcing ACT_DIESIMPLE\n" );
 				deathActivity = ACT_DIESIMPLE;
 			}
 	}

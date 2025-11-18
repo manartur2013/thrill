@@ -562,11 +562,11 @@ int CBasePlayer :: TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, 
 			SetSuitUpdate("!HEV_E4", FALSE, SUIT_NEXT_IN_5MIN);
 		}
 		
-		ALERT( at_console, "CBasePlayer: Sustained damage is: %f\n", flNew );
+		ALERT( at_aiconsole, "CBasePlayer: Sustained damage is: %f\n", flNew );
 
 		flDamage = flNew;
 	}
-	else ALERT( at_console, "CBasePlayer: Took damage of %f\n", flDamage );
+	else ALERT( at_aiconsole, "CBasePlayer: Took damage of %f\n", flDamage );
 
 	if ( flDamage > 0 && bitsDamageType & DMG_DROWN && pev->health - flDamage <= 0 )
 	{
@@ -1038,7 +1038,6 @@ void CBasePlayer::Killed( entvars_t *pevAttacker, int iGib )
 
 	if ( fGibbed )
 	{
-		ALERT( at_console, "GIBBO\n" );
 		pev->solid			= SOLID_NOT;
 		GibMonster();	// This clears pev->model
 		pev->effects |= EF_NODRAW;
@@ -1052,7 +1051,6 @@ void CBasePlayer::Killed( entvars_t *pevAttacker, int iGib )
 		}
 		else
 		{
-			ALERT( at_console, "We can be revived!\n" );
 			SetSuitUpdate("!HEV_HEAL9", FALSE, SUIT_REPEAT_OK);
 			m_flNextRevive = gpGlobals->time + 3.0;
 			return;
@@ -1062,15 +1060,9 @@ void CBasePlayer::Killed( entvars_t *pevAttacker, int iGib )
 	SetThink(&CBasePlayer::PlayerDeathThink);
 	pev->nextthink = gpGlobals->time + 0.1;
 
-//	replace this with client-based fade	
-//	UTIL_ScreenFade( this, Vector(128,0,0), 6, 2, 255, FFADE_OUT | FFADE_MODULATE | FFADE_PERMANENT );
-
-//	EMIT_SOUND(ENT(pev), CHAN_STATIC, "Common/TALK.WAV", 1.0, ATTN_NORM);
-//	CLIENT_PRINTF( ENT( pev ), print_center, "LOSAH!" );
 	if ( !fGibbed )
 		SetSuitUpdate("!HEV_E3", FALSE, SUIT_REPEAT_OK);
 	else if ( fHadSuit )
-	//	SetSuitUpdate("!HEV_E2", FALSE, SUIT_REPEAT_OK);
 		EMIT_SOUND_SUIT(ENT(pev), "!HEV_E2");
 }
 
@@ -1765,7 +1757,7 @@ void CBasePlayer::PlayerUse ( void )
 
 	if ( pObject )
 	{
-		ALERT(at_console, "object\n");
+		ALERT(at_aiconsole, "object\n");
 		
 		Vector vecCheck, vecOrigin;
 		int i = 0;
@@ -1788,7 +1780,7 @@ void CBasePlayer::PlayerUse ( void )
 		{
 			if ( pObject->ObjectCaps() & FCAP_USE_THROUGH_BSP )
 			{
-				ALERT( at_console, "Using %s without performing a traceline check\n", STRING( pObject->pev->classname ) );
+				ALERT( at_aiconsole, "Using %s without performing a traceline check\n", STRING( pObject->pev->classname ) );
 				canUse = TRUE;
 				break;
 			}
@@ -2220,7 +2212,6 @@ void CBasePlayer::PreThink(void)
 		{
 			if ( m_flNextRevive <= gpGlobals->time )
 			{
-				ALERT( at_console, "Revived player!\n" );
 				pev->deadflag = DEAD_NO;
 				pev->health = PLAYER_REVIVED_HEALTH;
 				m_rgItems[ITEM_ADRENALINE]--;
@@ -2502,7 +2493,6 @@ void CBasePlayer::CheckTimeBasedDamage()
 
 				if ( ((i == itbd_Paralyze) && (m_rgbTimeBasedDamage[i] < PARALYZE_DURATION)) && !m_fParalyzed )
 				{
-				//	ALERT( at_console, "Slowing down!\n" );
 					m_fParalyzed = TRUE;
 					g_engfuncs.pfnSetClientMaxspeed(edict(), 180 );
 				}
@@ -4253,7 +4243,7 @@ int CBasePlayer::AddPlayerItem( CBasePlayerItem *pItem )
 				// if the weapon was retired but not switched from yet, we might want to unretire it if we got some ammo for it
 				 if ( pev->viewmodel == iStringNull && m_pActiveItem )
 				{
-					ALERT ( at_console, "%s: Unretire\n", STRING(m_pActiveItem->pev->classname) );
+					ALERT ( at_aiconsole, "%s: Unretire\n", STRING(m_pActiveItem->pev->classname) );
 					m_pActiveItem->Deploy();
 				}
 
@@ -4682,7 +4672,6 @@ void CBasePlayer :: UpdateClientData( void )
 		if ( m_iLongJumpBattery < 5 )
 		{
 			m_flLongJumpTime = 1 + gpGlobals->time;
-			ALERT ( at_console, "Charging LJ module battery, %d /5!\n", m_iLongJumpBattery );
 			m_iLongJumpBattery++;
 		}
 	}

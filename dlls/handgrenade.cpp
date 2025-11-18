@@ -167,13 +167,9 @@ void CHandGrenade::WeaponIdle( void )
 		else if ( angThrow.x == -90 )
 			angThrow.x = -10 + angThrow.x * ( ( 90 + 10 ) / 90.0 );
 
-		ALERT( at_console, "throwing angle is: %f\n", angThrow.x );
-
 		float flVel = ( 90 - angThrow.x ) * 4;
 //		if ( flVel > 500 )
 //			flVel = 500;
-
-		ALERT( at_console, "throwing velocity is: %f\n", flVel );
 
 		UTIL_MakeVectors( angThrow );
 
@@ -222,7 +218,6 @@ void CHandGrenade::WeaponIdle( void )
 
 		if ( !m_pPlayer->m_rgAmmo[ m_iPrimaryAmmoType ] )
 		{
-			ALERT ( at_console, "last\n" );
 			// just threw last grenade
 			// set attack times in the future, and weapon idle in the future so we can see the whole throw
 			// animation, weapon idle will automatically retire the weapon for us.
@@ -232,13 +227,11 @@ void CHandGrenade::WeaponIdle( void )
 	}
 	else if ( m_flReleaseThrow > 0 )
 	{
-		ALERT ( at_console, "ammo check\n" );
 		// we've finished the throw, restart.
 		m_flStartThrow = 0;
 
 		if ( m_pPlayer->m_rgAmmo[ m_iPrimaryAmmoType ] )
 		{
-			ALERT ( at_console, "draw\n" );
 			SendWeaponAnim( HANDGRENADE_DRAW );
 		}
 	/*	else
